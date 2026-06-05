@@ -4,179 +4,216 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>IRIAM 配信補助ツール</title>
+<meta name="description" content="IRIAM配信者向け補助ツール。都道府県・星座・MBTI・ギフト耐久チェック、入室カウンター、企画ガチャ、進捗ツイート機能付き。">
+<meta name="theme-color" content="#4ecde6">
+<meta property="og:title" content="IRIAM 配信補助ツール">
+<meta property="og:description" content="都道府県・星座・MBTI・ギフト耐久チェック、入室カウンター、企画ガチャ搭載の配信補助ツール">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ac: #4ecde6;
-  --ac-light: #d0f5fb;
-  --ac-dark: #2aa8c0;
-  --bg: #f4fcfe;
-  --white: #ffffff;
-  --border: #cdeef5;
-  --text: #1a3a42;
-  --text2: #7aaab5;
-  --red: #ff5c6a;
-  --green: #3dcc7a;
-  --shadow: 0 2px 12px rgba(78,205,230,0.13);
-  --shadow-strong: 0 4px 20px rgba(78,205,230,0.22);
+  --ac:#4ecde6; --ac-light:#d0f5fb; --ac-dark:#2aa8c0;
+  --bg:#f4fcfe; --white:#fff; --border:#cdeef5;
+  --text:#1a3a42; --text2:#7aaab5;
+  --red:#ff5c6a; --green:#3dcc7a;
+  --shadow:0 2px 12px rgba(78,205,230,.13);
+  --sidebar-w:220px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-body { background: var(--bg); color: var(--text); font-family: 'M PLUS Rounded 1c', sans-serif; min-height: 100vh; overflow-x: hidden; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'M PLUS Rounded 1c',sans-serif;min-height:100vh;overflow-x:hidden}
 
-/* HEADER */
-header { background: var(--white); border-bottom: 2px solid var(--border); box-shadow: var(--shadow); padding: 10px 14px 0; position: sticky; top: 0; z-index: 200; }
-.header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
-.logo { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 18px; color: var(--ac-dark); letter-spacing: -0.02em; white-space: nowrap; }
-.header-right { display: flex; align-items: center; gap: 6px; }
-.color-btn { background: var(--ac-light); border: 2px solid var(--border); color: var(--ac-dark); padding: 5px 10px; border-radius: 16px; font-size: 11px; font-weight: 900; cursor: pointer; font-family: inherit; white-space: nowrap; }
-.reset-all-btn { background: #fff0f2; border: 2px solid #ffd0d6; color: var(--red); padding: 5px 10px; border-radius: 16px; font-size: 11px; font-weight: 900; cursor: pointer; font-family: inherit; white-space: nowrap; }
+/* ===== HEADER ===== */
+header{background:var(--white);border-bottom:2px solid var(--border);box-shadow:var(--shadow);padding:10px 14px 0;position:sticky;top:0;z-index:200}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
+.logo{font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;color:var(--ac-dark);white-space:nowrap}
+.header-right{display:flex;align-items:center;gap:6px}
+.color-btn{background:var(--ac-light);border:2px solid var(--border);color:var(--ac-dark);padding:5px 10px;border-radius:16px;font-size:11px;font-weight:900;cursor:pointer;font-family:inherit;white-space:nowrap}
+.reset-all-btn{background:#fff0f2;border:2px solid #ffd0d6;color:var(--red);padding:5px 10px;border-radius:16px;font-size:11px;font-weight:900;cursor:pointer;font-family:inherit;white-space:nowrap}
+.tweet-btn{background:linear-gradient(135deg,#1da1f2,#0d8fd6);border:none;color:white;padding:5px 10px;border-radius:16px;font-size:11px;font-weight:900;cursor:pointer;font-family:inherit;white-space:nowrap}
 
-/* COLOR PICKER MODAL */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center; }
-.modal-overlay.open { display: flex; }
-.modal { background: var(--white); border-radius: 24px; padding: 22px; width: 88%; max-width: 340px; box-shadow: 0 8px 40px rgba(0,0,0,0.18); }
-.modal-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 16px; margin-bottom: 16px; text-align: center; }
-.color-presets { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 16px; }
-.color-preset { width: 100%; aspect-ratio: 1; border-radius: 50%; border: 3px solid transparent; cursor: pointer; transition: transform 0.15s; }
-.color-preset:active { transform: scale(0.88); }
-.color-preset.selected { border-color: var(--text); }
-.color-custom-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-.color-custom-label { font-size: 12px; font-weight: 900; color: var(--text2); }
-.color-input { width: 44px; height: 44px; border: 2px solid var(--border); border-radius: 12px; cursor: pointer; padding: 2px; background: none; }
-.modal-close { width: 100%; padding: 12px; background: var(--ac); border: none; border-radius: 14px; color: white; font-family: inherit; font-size: 14px; font-weight: 900; cursor: pointer; }
+/* ===== TABS (mobile) ===== */
+.tabs{display:flex;gap:3px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:8px 12px 9px;border-radius:10px 10px 0 0;border:2px solid transparent;border-bottom:none;background:transparent;color:var(--text2);font-family:inherit;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap;position:relative;bottom:-2px;display:flex;align-items:center;gap:4px}
+.tab.active{background:var(--white);color:var(--text);border-color:var(--border);border-bottom-color:var(--white)}
 
-/* TABS */
-.tabs { display: flex; gap: 3px; overflow-x: auto; scrollbar-width: none; }
-.tabs::-webkit-scrollbar { display: none; }
-.tab { flex-shrink: 0; padding: 8px 12px 9px; border-radius: 10px 10px 0 0; border: 2px solid transparent; border-bottom: none; background: transparent; color: var(--text2); font-family: inherit; font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; position: relative; bottom: -2px; display: flex; align-items: center; gap: 4px; }
-.tab.active { background: var(--white); color: var(--text); border-color: var(--border); border-bottom-color: var(--white); }
+/* ===== PC LAYOUT ===== */
+@media(min-width:768px){
+  header{padding:12px 24px 0}
+  .logo{font-size:20px}
+  .tabs{display:none}
+  .layout{display:flex;min-height:calc(100vh - 70px)}
+  .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--white);border-right:2px solid var(--border);padding:16px 12px;position:sticky;top:70px;height:calc(100vh - 70px);overflow-y:auto}
+  .sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;cursor:pointer;font-weight:900;font-size:13px;color:var(--text2);transition:all .15s;margin-bottom:4px;border:2px solid transparent;white-space:nowrap}
+  .sidebar-item:hover{background:var(--ac-light);color:var(--ac-dark)}
+  .sidebar-item.active{background:var(--ac-light);color:var(--ac-dark);border-color:var(--border)}
+  .sidebar-icon{font-size:16px}
+  .content-area{flex:1;padding:24px;max-width:900px}
+  .check-grid{grid-template-columns:repeat(5,1fr)}
+  .check-grid.cols2{grid-template-columns:repeat(3,1fr)}
+  .check-grid.cols4{grid-template-columns:repeat(6,1fr)}
+  .mbti-grid{grid-template-columns:repeat(4,1fr)}
+  .star-grid{grid-template-columns:repeat(6,1fr)}
+  .gift-grid-inner{grid-template-columns:repeat(5,1fr)}
+  .counter-list{flex-direction:row;flex-wrap:wrap}
+  .counter-item-card{flex:1;min-width:260px}
+  .any-list-wrap{display:flex;flex-wrap:wrap;gap:10px}
+  .any-card{flex:1;min-width:260px}
+}
+@media(max-width:767px){
+  .layout{display:block}
+  .sidebar{display:none}
+  .content-area{padding:14px}
+  .gift-grid-inner{grid-template-columns:repeat(3,1fr)}
+}
 
-/* MAIN */
-main { padding: 14px; }
-.page { display: none; }
-.page.active { display: block; animation: fadeUp 0.2s ease; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+/* ===== MAIN ===== */
+.page{display:none}
+.page.active{display:block;animation:fadeUp .2s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 
-/* PAGE HEAD */
-.page-head { background: var(--white); border-radius: 18px; padding: 14px; margin-bottom: 12px; box-shadow: var(--shadow); border: 2px solid var(--border); }
-.page-head-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.page-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 17px; display: flex; align-items: center; gap: 7px; }
-.prog-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
-.prog-text { font-size: 12px; font-weight: 900; color: var(--text2); }
-.prog-text span { font-size: 19px; color: var(--text); font-family: 'Nunito', sans-serif; }
-.prog-text.done span { color: var(--green); }
-.done-badge { display: inline-flex; align-items: center; gap: 3px; background: #e6fff2; border: 2px solid #b0f0cc; color: var(--green); font-size: 11px; font-weight: 900; padding: 3px 9px; border-radius: 20px; }
-.reset-btn { background: var(--ac-light); border: 2px solid var(--border); color: var(--ac-dark); padding: 6px 12px; border-radius: 12px; font-size: 11px; font-weight: 900; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
-.reset-btn:active { transform: scale(0.93); }
+/* ===== PAGE HEAD ===== */
+.page-head{background:var(--white);border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:var(--shadow);border:2px solid var(--border)}
+.page-head-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.page-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:17px;display:flex;align-items:center;gap:7px}
+.prog-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.prog-text{font-size:12px;font-weight:900;color:var(--text2)}
+.prog-text span{font-size:19px;color:var(--text);font-family:'Nunito',sans-serif}
+.prog-text.done span{color:var(--green)}
+.done-badge{display:inline-flex;align-items:center;gap:3px;background:#e6fff2;border:2px solid #b0f0cc;color:var(--green);font-size:11px;font-weight:900;padding:3px 9px;border-radius:20px}
+.reset-btn{background:var(--ac-light);border:2px solid var(--border);color:var(--ac-dark);padding:6px 12px;border-radius:12px;font-size:11px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.reset-btn:active{transform:scale(.93)}
+.prog-bar-wrap{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-bar{height:100%;border-radius:4px;background:var(--ac);transition:width .4s cubic-bezier(.34,1.56,.64,1)}
 
-/* PROGRESS BAR */
-.prog-bar-wrap { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-.prog-bar { height: 100%; border-radius: 4px; background: var(--ac); transition: width 0.4s cubic-bezier(.34,1.56,.64,1); }
+/* ===== CHECK GRID ===== */
+.check-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
+.check-item{background:var(--white);border:2px solid var(--border);border-radius:13px;padding:9px 8px;cursor:pointer;transition:all .14s;display:flex;align-items:center;gap:6px;user-select:none;box-shadow:var(--shadow)}
+.check-item:active{transform:scale(.93)}
+.check-item.checked{background:var(--ac-light);border-color:var(--ac);opacity:.7}
+.cb{width:19px;height:19px;border-radius:5px;border:2.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .14s;background:var(--white)}
+.check-item.checked .cb{background:var(--ac);border-color:var(--ac);color:white}
+.cl{font-size:11px;font-weight:900;line-height:1.2}
+.check-item.checked .cl{text-decoration:line-through;color:var(--text2)}
+.cs{font-size:9px;color:var(--text2);margin-top:1px}
 
-/* CHECK GRID */
-.check-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 14px; }
-.check-grid.cols2 { grid-template-columns: repeat(2, 1fr); }
-.check-grid.cols4 { grid-template-columns: repeat(4, 1fr); }
+/* ===== MBTI ===== */
+.mbti-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.mbti-item{background:var(--white);border:2px solid var(--border);border-radius:14px;padding:11px;cursor:pointer;transition:all .14s;display:flex;align-items:center;gap:9px;user-select:none;box-shadow:var(--shadow)}
+.mbti-item:active{transform:scale(.94)}
+.mbti-item.checked{background:var(--ac-light);border-color:var(--ac);opacity:.65}
+.mbti-item.checked .cb{background:var(--ac);border-color:var(--ac);color:white}
+.mbti-code{font-family:'Nunito',sans-serif;font-weight:900;font-size:14px}
+.mbti-name{font-size:9px;color:var(--text2);margin-top:1px}
 
-.check-item { background: var(--white); border: 2px solid var(--border); border-radius: 13px; padding: 9px 8px; cursor: pointer; transition: all 0.14s; display: flex; align-items: center; gap: 6px; user-select: none; box-shadow: var(--shadow); }
-.check-item:active { transform: scale(0.93); }
-.check-item.checked { background: var(--ac-light); border-color: var(--ac); opacity: 0.7; }
-.cb { width: 19px; height: 19px; border-radius: 5px; border: 2.5px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; transition: all 0.14s; background: var(--white); }
-.check-item.checked .cb { background: var(--ac); border-color: var(--ac); color: white; }
-.cl { font-size: 11px; font-weight: 900; line-height: 1.2; }
-.check-item.checked .cl { text-decoration: line-through; color: var(--text2); }
-.cs { font-size: 9px; color: var(--text2); margin-top: 1px; }
+/* ===== STAR ===== */
+.star-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.star-illo-card{background:var(--white);border:2px solid var(--border);border-radius:16px;padding:12px 8px 8px;text-align:center;box-shadow:var(--shadow)}
+.star-illo-card svg{width:70px;height:70px;display:block;margin:0 auto 6px}
+.star-illo-name{font-size:11px;font-weight:900}
+.star-illo-en{font-size:9px;color:var(--text2)}
 
-/* MBTI */
-.mbti-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-.mbti-item { background: var(--white); border: 2px solid var(--border); border-radius: 14px; padding: 11px; cursor: pointer; transition: all 0.14s; display: flex; align-items: center; gap: 9px; user-select: none; box-shadow: var(--shadow); }
-.mbti-item:active { transform: scale(0.94); }
-.mbti-item.checked { background: var(--ac-light); border-color: var(--ac); opacity: 0.65; }
-.mbti-item.checked .cb { background: var(--ac); border-color: var(--ac); color: white; }
-.mbti-code { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 14px; }
-.mbti-name { font-size: 9px; color: var(--text2); margin-top: 1px; }
+/* ===== GIFT ===== */
+.gift-cat-card{background:var(--white);border:2px solid var(--border);border-radius:18px;padding:13px;margin-bottom:12px;box-shadow:var(--shadow)}
+.gift-cat-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.cat-pill{font-size:12px;font-weight:900;padding:4px 11px;border-radius:20px;display:inline-flex;align-items:center}
+.cat-count{font-size:12px;font-weight:900;color:var(--text2)}
+.cat-count.done{color:var(--green)}
+.gift-grid-inner{display:grid;gap:7px;margin-bottom:8px}
 
-/* MULTI COUNTER */
-.counter-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
-.counter-item-card { background: var(--white); border: 2px solid var(--border); border-radius: 18px; padding: 14px 14px 12px; box-shadow: var(--shadow); }
-.counter-item-top { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-.counter-item-name { flex: 1; background: var(--bg); border: 2px solid var(--border); border-radius: 10px; color: var(--text); font-family: inherit; font-size: 13px; font-weight: 900; padding: 7px 10px; outline: none; transition: border-color 0.16s; }
-.counter-item-name:focus { border-color: var(--ac); }
-.counter-item-del { background: #fff0f2; border: 2px solid #ffd0d6; border-radius: 10px; color: var(--red); font-family: inherit; font-size: 13px; font-weight: 900; padding: 7px 10px; cursor: pointer; flex-shrink: 0; }
-.counter-item-del:active { transform: scale(0.92); }
-.counter-item-num { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 52px; line-height: 1; color: var(--ac-dark); text-align: center; display: block; transition: color 0.2s; }
-.counter-item-num.danger { color: var(--red); }
-.counter-item-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
-.btn-mid { padding: 12px; border-radius: 13px; border: none; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 20px; cursor: pointer; transition: all 0.13s; }
-.btn-mid:active { transform: scale(0.91); }
-.counter-item-quick { display: flex; gap: 5px; margin-top: 7px; flex-wrap: wrap; }
-.counter-item-custom { display: flex; gap: 6px; margin-top: 7px; align-items: center; }
-.counter-item-custom-input { width: 72px; background: var(--bg); border: 2px solid var(--border); border-radius: 10px; color: var(--text); font-family: inherit; font-size: 14px; font-weight: 900; padding: 8px 6px; text-align: center; outline: none; }
-.counter-item-custom-input:focus { border-color: var(--ac); }
-.btn-custom-s { border-radius: 10px; font-family: inherit; font-size: 11px; font-weight: 900; padding: 8px 11px; cursor: pointer; border: 2px solid; white-space: nowrap; }
-.btn-custom-s:active { transform: scale(0.91); }
-.counter-item-set { display: flex; gap: 6px; margin-top: 7px; align-items: center; }
-.counter-item-set-input { flex: 1; background: var(--bg); border: 2px solid var(--border); border-radius: 10px; color: var(--text); font-family: inherit; font-size: 13px; font-weight: 900; padding: 8px 10px; text-align: center; outline: none; }
-.counter-item-set-input:focus { border-color: var(--ac); }
-.btn-set-s { background: var(--ac); border: none; border-radius: 10px; color: white; font-family: inherit; font-size: 12px; font-weight: 900; padding: 8px 13px; cursor: pointer; white-space: nowrap; }
-.btn-set-s:active { transform: scale(0.92); }
-.add-counter-btn { width: 100%; padding: 14px; border-radius: 16px; border: 2px dashed var(--border); background: var(--white); color: var(--ac-dark); font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 16px; cursor: pointer; transition: all 0.16s; }
-.add-counter-btn:active { transform: scale(0.97); }
+/* ===== COUNTER ===== */
+.counter-list{display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
+.counter-item-card{background:var(--white);border:2px solid var(--border);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+.counter-item-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.counter-item-name{flex:1;background:var(--bg);border:2px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:13px;font-weight:900;padding:7px 10px;outline:none;transition:border-color .16s}
+.counter-item-name:focus{border-color:var(--ac)}
+.counter-item-del{background:#fff0f2;border:2px solid #ffd0d6;border-radius:10px;color:var(--red);font-family:inherit;font-size:13px;font-weight:900;padding:7px 10px;cursor:pointer;flex-shrink:0}
+.counter-item-del:active{transform:scale(.92)}
+.counter-item-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:52px;line-height:1;color:var(--ac-dark);text-align:center;display:block;transition:color .2s}
+.counter-item-num.danger{color:var(--red)}
+.counter-item-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.btn-mid{padding:12px;border-radius:13px;border:none;font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;cursor:pointer;transition:all .13s}
+.btn-mid:active{transform:scale(.91)}
+.counter-item-quick{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.counter-item-custom{display:flex;gap:6px;margin-top:7px;align-items:center}
+.counter-item-custom-input{width:72px;background:var(--bg);border:2px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:14px;font-weight:900;padding:8px 6px;text-align:center;outline:none}
+.counter-item-custom-input:focus{border-color:var(--ac)}
+.btn-custom-s{border-radius:10px;font-family:inherit;font-size:11px;font-weight:900;padding:8px 11px;cursor:pointer;border:2px solid;white-space:nowrap}
+.btn-custom-s:active{transform:scale(.91)}
+.counter-item-set{display:flex;gap:6px;margin-top:7px;align-items:center}
+.counter-item-set-input{flex:1;background:var(--bg);border:2px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:13px;font-weight:900;padding:8px 10px;text-align:center;outline:none}
+.counter-item-set-input:focus{border-color:var(--ac)}
+.btn-set-s{background:var(--ac);border:none;border-radius:10px;color:white;font-family:inherit;font-size:12px;font-weight:900;padding:8px 13px;cursor:pointer;white-space:nowrap}
+.btn-set-s:active{transform:scale(.92)}
+.add-counter-btn{width:100%;padding:14px;border-radius:16px;border:2px dashed var(--border);background:var(--white);color:var(--ac-dark);font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;cursor:pointer;transition:all .16s}
+.add-counter-btn:active{transform:scale(.97)}
+.any-card{background:var(--white);border:2px solid var(--border);border-radius:16px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.any-label{font-size:11px;font-weight:900;color:var(--text2);white-space:nowrap}
+.any-num-input{width:72px;background:var(--bg);border:2px solid var(--border);border-radius:10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:18px;font-weight:900;padding:9px 6px;text-align:center;outline:none;transition:border-color .15s}
+.any-num-input:focus{border-color:var(--ac)}
+.any-op-btn{width:52px;height:52px;border-radius:12px;border:2px solid;font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .13s;flex-shrink:0}
+.any-op-btn:active{transform:scale(.90)}
+.any-minus{background:#fff0f2;border-color:#ffd0d6;color:var(--red)}
+.any-plus{background:#efffef;border-color:#c0f0cc;color:var(--green)}
+.any-del{background:transparent;border:none;color:var(--text2);font-size:16px;cursor:pointer;padding:4px 6px;margin-left:auto;flex-shrink:0}
 
-/* STAR CONSTELLATION */
-.star-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
-.star-illo-card { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 12px 8px 8px; text-align: center; box-shadow: var(--shadow); }
-.star-illo-card svg { width: 70px; height: 70px; display: block; margin: 0 auto 6px; }
-.star-illo-name { font-size: 11px; font-weight: 900; }
-.star-illo-en { font-size: 9px; color: var(--text2); }
+/* ===== GACHA ===== */
+.gacha-wrap{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--white);border:2px solid var(--border);border-radius:20px;padding:16px;box-shadow:var(--shadow)}
+.card-label{font-size:12px;font-weight:900;color:var(--text2);margin-bottom:9px}
+.gacha-textarea{width:100%;background:var(--bg);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;font-size:14px;font-weight:700;padding:11px 13px;resize:vertical;min-height:110px;outline:none;line-height:1.7;transition:border-color .16s}
+.gacha-textarea:focus{border-color:var(--ac)}
+.gacha-textarea::placeholder{color:var(--text2)}
+.gacha-count{font-size:11px;font-weight:900;color:var(--text2);text-align:right;margin-top:5px}
+.gacha-btn{width:100%;padding:17px;border-radius:16px;border:none;background:var(--ac);color:white;font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;cursor:pointer;transition:all .16s;box-shadow:0 4px 16px rgba(78,205,230,.35)}
+.gacha-btn:active{transform:scale(.96)}
+.gacha-result-inner{min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.gacha-placeholder{font-size:13px;color:var(--text2);font-weight:700}
+.gacha-result-label{font-size:11px;color:var(--text2);font-weight:900;letter-spacing:.06em;margin-bottom:7px}
+.gacha-result-text{font-family:'Nunito',sans-serif;font-weight:900;font-size:24px;color:var(--ac-dark);animation:popIn .32s cubic-bezier(.34,1.56,.64,1);line-height:1.3;word-break:break-all}
+@keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.hist-item{display:flex;justify-content:space-between;align-items:center;padding:8px 11px;background:var(--bg);border-radius:9px;margin-bottom:5px;font-size:13px;font-weight:700}
+.hist-num{font-size:10px;color:var(--text2);font-weight:900}
 
-/* GIFT */
-.gift-cat-card { background: var(--white); border: 2px solid var(--border); border-radius: 18px; padding: 13px; margin-bottom: 12px; box-shadow: var(--shadow); }
-.gift-cat-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
-.cat-pill { font-size: 12px; font-weight: 900; padding: 4px 11px; border-radius: 20px; display: inline-flex; align-items: center; }
-.cat-count { font-size: 12px; font-weight: 900; color: var(--text2); }
-.cat-count.done { color: var(--green); }
+/* ===== TWEET MODAL ===== */
+.tweet-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
+.tweet-modal-overlay.open{display:flex}
+.tweet-modal{background:var(--white);border-radius:24px;padding:22px;width:92%;max-width:420px;box-shadow:0 8px 40px rgba(0,0,0,.2)}
+.tweet-modal-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;margin-bottom:14px;text-align:center}
+.tweet-preview{background:var(--bg);border:2px solid var(--border);border-radius:14px;padding:14px;font-size:13px;line-height:1.8;white-space:pre-wrap;word-break:break-all;margin-bottom:12px;min-height:80px}
+.tweet-char{font-size:11px;color:var(--text2);text-align:right;margin-bottom:12px;font-weight:900}
+.tweet-char.over{color:var(--red)}
+.tweet-hashtag{width:100%;background:var(--bg);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;font-size:13px;font-weight:700;padding:9px 12px;outline:none;margin-bottom:12px;transition:border-color .16s}
+.tweet-hashtag:focus{border-color:var(--ac)}
+.tweet-modal-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn-tweet-cancel{background:var(--bg);border:2px solid var(--border);border-radius:14px;color:var(--text2);font-family:inherit;font-size:13px;font-weight:900;padding:12px;cursor:pointer}
+.btn-tweet-go{background:linear-gradient(135deg,#1da1f2,#0d8fd6);border:none;border-radius:14px;color:white;font-family:inherit;font-size:13px;font-weight:900;padding:12px;cursor:pointer}
+.btn-tweet-go:active{transform:scale(.96)}
 
-/* ANY COUNTER */
-.any-card { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 12px 14px; margin-bottom: 8px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.any-label { font-size: 11px; font-weight: 900; color: var(--text2); white-space: nowrap; }
-.any-num-input { width: 72px; background: var(--bg); border: 2px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; padding: 9px 6px; text-align: center; outline: none; transition: border-color 0.15s; }
-.any-num-input:focus { border-color: var(--ac); }
-.any-op-btn { width: 52px; height: 52px; border-radius: 12px; border: 2px solid; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.13s; flex-shrink: 0; }
-.any-op-btn:active { transform: scale(0.90); }
-.any-minus { background: #fff0f2; border-color: #ffd0d6; color: var(--red); }
-.any-plus  { background: #efffef; border-color: #c0f0cc; color: var(--green); }
-.any-del { background: transparent; border: none; color: var(--text2); font-size: 16px; cursor: pointer; padding: 4px 6px; margin-left: auto; flex-shrink: 0; }
-.any-del:active { transform: scale(0.88); }
+/* ===== COLOR MODAL ===== */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:24px;padding:22px;width:88%;max-width:340px;box-shadow:0 8px 40px rgba(0,0,0,.18)}
+.modal-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;margin-bottom:16px;text-align:center}
+.color-presets{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.color-preset{width:100%;aspect-ratio:1;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:transform .15s}
+.color-preset:active{transform:scale(.88)}
+.color-preset.selected{border-color:var(--text)}
+.color-custom-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.color-custom-label{font-size:12px;font-weight:900;color:var(--text2)}
+.color-input{width:44px;height:44px;border:2px solid var(--border);border-radius:12px;cursor:pointer;padding:2px;background:none}
+.modal-close{width:100%;padding:12px;background:var(--ac);border:none;border-radius:14px;color:white;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer}
 
-/* GACHA */
-.gacha-wrap { display: flex; flex-direction: column; gap: 12px; }
-.card { background: var(--white); border: 2px solid var(--border); border-radius: 20px; padding: 16px; box-shadow: var(--shadow); }
-.card-label { font-size: 12px; font-weight: 900; color: var(--text2); margin-bottom: 9px; }
-.gacha-textarea { width: 100%; background: var(--bg); border: 2px solid var(--border); border-radius: 12px; color: var(--text); font-family: inherit; font-size: 14px; font-weight: 700; padding: 11px 13px; resize: vertical; min-height: 110px; outline: none; line-height: 1.7; transition: border-color 0.16s; }
-.gacha-textarea:focus { border-color: var(--ac); }
-.gacha-textarea::placeholder { color: var(--text2); }
-.gacha-count { font-size: 11px; font-weight: 900; color: var(--text2); text-align: right; margin-top: 5px; }
-.gacha-btn { width: 100%; padding: 17px; border-radius: 16px; border: none; background: var(--ac); color: white; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 18px; cursor: pointer; transition: all 0.16s; box-shadow: 0 4px 16px rgba(78,205,230,0.35); }
-.gacha-btn:active { transform: scale(0.96); }
-.gacha-result-inner { min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.gacha-placeholder { font-size: 13px; color: var(--text2); font-weight: 700; }
-.gacha-result-label { font-size: 11px; color: var(--text2); font-weight: 900; letter-spacing: 0.06em; margin-bottom: 7px; }
-.gacha-result-text { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 24px; color: var(--ac-dark); animation: popIn 0.32s cubic-bezier(.34,1.56,.64,1); line-height: 1.3; word-break: break-all; }
-@keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-.hist-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 11px; background: var(--bg); border-radius: 9px; margin-bottom: 5px; font-size: 13px; font-weight: 700; }
-.hist-num { font-size: 10px; color: var(--text2); font-weight: 900; }
-
-/* CONFETTI */
-.confetti { position: fixed; pointer-events: none; z-index: 9999; font-size: 22px; animation: confettiFall linear forwards; }
-@keyframes confettiFall { 0%{transform:translateY(-30px) rotate(0deg) scale(1);opacity:1} 100%{transform:translateY(110vh) rotate(540deg) scale(0.5);opacity:0} }
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+/* ===== MISC ===== */
+.confetti{position:fixed;pointer-events:none;z-index:9999;font-size:22px;animation:confettiFall linear forwards}
+@keyframes confettiFall{0%{transform:translateY(-30px) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(110vh) rotate(540deg) scale(.5);opacity:0}}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 </style>
 </head>
 <body>
 
-<!-- COLOR PICKER MODAL -->
+<!-- COLOR MODAL -->
 <div class="modal-overlay" id="color-modal">
   <div class="modal">
     <div class="modal-title">🎨 テーマカラーを選ぶ</div>
@@ -190,10 +227,25 @@ main { padding: 14px; }
   </div>
 </div>
 
+<!-- TWEET MODAL -->
+<div class="tweet-modal-overlay" id="tweet-modal">
+  <div class="tweet-modal">
+    <div class="tweet-modal-title">🐦 進捗をツイート</div>
+    <div class="tweet-preview" id="tweet-preview"></div>
+    <div class="tweet-char" id="tweet-char">0 / 280</div>
+    <input class="tweet-hashtag" type="text" id="tweet-hashtag" placeholder="#IRIAM #IRIAMライバー" value="#IRIAM #IRIAMライバー" oninput="updateTweetPreview()">
+    <div class="tweet-modal-btns">
+      <button class="btn-tweet-cancel" onclick="closeTweetModal()">キャンセル</button>
+      <button class="btn-tweet-go" onclick="doTweet()">ツイートする 🐦</button>
+    </div>
+  </div>
+</div>
+
 <header>
   <div class="header-top">
     <div class="logo">🎙 配信補助ツール</div>
     <div class="header-right">
+      <button class="tweet-btn" onclick="openTweetModal()">🐦 ツイート</button>
       <button class="color-btn" onclick="openColorModal()">🎨 カラー</button>
       <button class="reset-all-btn" onclick="resetAll()">🗑 全リセット</button>
     </div>
@@ -201,482 +253,397 @@ main { padding: 14px; }
   <div class="tabs" id="tabs"></div>
 </header>
 
-<main>
+<div class="layout">
+  <div class="sidebar" id="sidebar"></div>
+  <div class="content-area">
+    <main>
 
-<!-- 都道府県 -->
-<div class="page" id="page-pref">
-  <div class="page-head">
-    <div class="page-head-top">
-      <div class="page-title">🗾 47都道府県</div>
-      <button class="reset-btn" id="reset-btn-pref" onclick="resetSection('pref')">リセット</button>
+    <!-- 都道府県 -->
+    <div class="page" id="page-pref">
+      <div class="page-head">
+        <div class="page-head-top">
+          <div class="page-title">🗾 47都道府県</div>
+          <button class="reset-btn" onclick="resetSection('pref')">リセット</button>
+        </div>
+        <div class="prog-row">
+          <div class="prog-text" id="prog-text-pref"><span>0</span> / 47</div>
+          <div id="done-pref"></div>
+        </div>
+        <div class="prog-bar-wrap"><div class="prog-bar" id="bar-pref" style="width:0%"></div></div>
+      </div>
+      <div class="check-grid cols4" id="grid-pref"></div>
     </div>
-    <div class="prog-row">
-      <div class="prog-text" id="prog-text-pref"><span>0</span> / 47</div>
-      <div id="done-pref"></div>
-    </div>
-    <div class="prog-bar-wrap"><div class="prog-bar" id="bar-pref" style="width:0%"></div></div>
-  </div>
-  <div class="check-grid cols4" id="grid-pref"></div>
-</div>
 
-<!-- 星座 -->
-<div class="page" id="page-star">
-  <div class="page-head">
-    <div class="page-head-top">
-      <div class="page-title">⭐ 12星座</div>
-      <button class="reset-btn" id="reset-btn-star" onclick="resetSection('star')">リセット</button>
-    </div>
-    <div class="prog-row">
-      <div class="prog-text" id="prog-text-star"><span>0</span> / 12</div>
-      <div id="done-star"></div>
-    </div>
-    <div class="prog-bar-wrap"><div class="prog-bar" id="bar-star" style="width:0%"></div></div>
-  </div>
-  <div class="check-grid cols2" id="grid-star"></div>
-  <div class="card" style="margin-top:14px">
-    <div class="card-label">✨ 星座イラスト</div>
-    <div class="star-grid" id="star-illo-grid"></div>
-  </div>
-</div>
-
-<!-- MBTI -->
-<div class="page" id="page-mbti">
-  <div class="page-head">
-    <div class="page-head-top">
-      <div class="page-title">🧠 MBTI</div>
-      <button class="reset-btn" id="reset-btn-mbti" onclick="resetSection('mbti')">リセット</button>
-    </div>
-    <div class="prog-row">
-      <div class="prog-text" id="prog-text-mbti"><span>0</span> / 16</div>
-      <div id="done-mbti"></div>
-    </div>
-    <div class="prog-bar-wrap"><div class="prog-bar" id="bar-mbti" style="width:0%"></div></div>
-  </div>
-  <div class="mbti-grid" id="grid-mbti"></div>
-</div>
-
-<!-- ギフト -->
-<div class="page" id="page-gift">
-  <div id="gift-content"></div>
-</div>
-
-<!-- カウンター -->
-<div class="page" id="page-counter">
-  <div class="counter-list" id="counter-list"></div>
-  <button class="add-counter-btn" onclick="addCounter()">＋ カウンターを追加</button>
-
-  <div style="margin-top:20px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between">
-    <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:14px;color:var(--text2)">🛟 任意カウンター</div>
-    <button class="add-counter-btn" style="width:auto;padding:8px 16px;font-size:13px" onclick="addAny()">＋ 追加</button>
-  </div>
-  <div id="any-list"></div>
-</div>
-
-<!-- 企画ガチャ -->
-<div class="page" id="page-gacha">
-  <div class="gacha-wrap">
-    <div class="card">
-      <div class="card-label">📝 企画リスト（1行1企画）</div>
-      <textarea class="gacha-textarea" id="gacha-input"
-        placeholder="例：&#10;雑談配信&#10;歌ってみた&#10;お絵描き配信&#10;ゲーム実況"
-        oninput="updateGachaCount()"></textarea>
-      <div class="gacha-count" id="gacha-count">0 件</div>
-    </div>
-    <button class="gacha-btn" onclick="doGacha()">🎲 ガチャを引く！</button>
-    <div class="card">
-      <div class="gacha-result-inner" id="gacha-result">
-        <div class="gacha-placeholder">まだ引いていません</div>
+    <!-- 星座 -->
+    <div class="page" id="page-star">
+      <div class="page-head">
+        <div class="page-head-top">
+          <div class="page-title">⭐ 12星座</div>
+          <button class="reset-btn" onclick="resetSection('star')">リセット</button>
+        </div>
+        <div class="prog-row">
+          <div class="prog-text" id="prog-text-star"><span>0</span> / 12</div>
+          <div id="done-star"></div>
+        </div>
+        <div class="prog-bar-wrap"><div class="prog-bar" id="bar-star" style="width:0%"></div></div>
+      </div>
+      <div class="check-grid cols2" id="grid-star"></div>
+      <div class="card" style="margin-top:14px">
+        <div class="card-label">✨ 星座イラスト</div>
+        <div class="star-grid" id="star-illo-grid"></div>
       </div>
     </div>
-    <div class="card" id="gacha-history-card" style="display:none">
-      <div class="card-label">📋 履歴</div>
-      <div id="history-list"></div>
+
+    <!-- MBTI -->
+    <div class="page" id="page-mbti">
+      <div class="page-head">
+        <div class="page-head-top">
+          <div class="page-title">🧠 MBTI</div>
+          <button class="reset-btn" onclick="resetSection('mbti')">リセット</button>
+        </div>
+        <div class="prog-row">
+          <div class="prog-text" id="prog-text-mbti"><span>0</span> / 16</div>
+          <div id="done-mbti"></div>
+        </div>
+        <div class="prog-bar-wrap"><div class="prog-bar" id="bar-mbti" style="width:0%"></div></div>
+      </div>
+      <div class="mbti-grid" id="grid-mbti"></div>
     </div>
+
+    <!-- ギフト -->
+    <div class="page" id="page-gift">
+      <div id="gift-content"></div>
+    </div>
+
+    <!-- カウンター -->
+    <div class="page" id="page-counter">
+      <div class="counter-list" id="counter-list"></div>
+      <button class="add-counter-btn" style="margin-bottom:20px" onclick="addCounter()">＋ カウンターを追加</button>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:14px;color:var(--text2)">🛟 任意カウンター</div>
+        <button class="add-counter-btn" style="width:auto;padding:8px 16px;font-size:13px" onclick="addAny()">＋ 追加</button>
+      </div>
+      <div id="any-list"></div>
+    </div>
+
+    <!-- 企画ガチャ -->
+    <div class="page" id="page-gacha">
+      <div class="gacha-wrap">
+        <div class="card">
+          <div class="card-label">📝 企画リスト（1行1企画）</div>
+          <textarea class="gacha-textarea" id="gacha-input"
+            placeholder="例：&#10;雑談配信&#10;歌ってみた&#10;お絵描き配信&#10;ゲーム実況"
+            oninput="updateGachaCount()"></textarea>
+          <div class="gacha-count" id="gacha-count">0 件</div>
+        </div>
+        <button class="gacha-btn" onclick="doGacha()">🎲 ガチャを引く！</button>
+        <div class="card">
+          <div class="gacha-result-inner" id="gacha-result">
+            <div class="gacha-placeholder">まだ引いていません</div>
+          </div>
+        </div>
+        <div class="card" id="gacha-history-card" style="display:none">
+          <div class="card-label">📋 履歴</div>
+          <div id="history-list"></div>
+        </div>
+      </div>
+    </div>
+
+    </main>
   </div>
 </div>
 
-</main>
 <script>
 // ===== DATA =====
-const PREFS = ['北海道','青森','岩手','宮城','秋田','山形','福島','茨城','栃木','群馬','埼玉','千葉','東京','神奈川','新潟','富山','石川','福井','山梨','長野','岐阜','静岡','愛知','三重','滋賀','京都','大阪','兵庫','奈良','和歌山','鳥取','島根','岡山','広島','山口','徳島','香川','愛媛','高知','福岡','佐賀','長崎','熊本','大分','宮崎','鹿児島','沖縄'];
+const PREFS=['北海道','青森','岩手','宮城','秋田','山形','福島','茨城','栃木','群馬','埼玉','千葉','東京','神奈川','新潟','富山','石川','福井','山梨','長野','岐阜','静岡','愛知','三重','滋賀','京都','大阪','兵庫','奈良','和歌山','鳥取','島根','岡山','広島','山口','徳島','香川','愛媛','高知','福岡','佐賀','長崎','熊本','大分','宮崎','鹿児島','沖縄'];
 
-const STARS = [
-  {n:'おひつじ座',e:'Aries',i:'♈'},
-  {n:'おうし座',e:'Taurus',i:'♉'},
-  {n:'ふたご座',e:'Gemini',i:'♊'},
-  {n:'かに座',e:'Cancer',i:'♋'},
-  {n:'しし座',e:'Leo',i:'♌'},
-  {n:'おとめ座',e:'Virgo',i:'♍'},
-  {n:'てんびん座',e:'Libra',i:'♎'},
-  {n:'さそり座',e:'Scorpio',i:'♏'},
-  {n:'いて座',e:'Sagittarius',i:'♐'},
-  {n:'やぎ座',e:'Capricorn',i:'♑'},
-  {n:'みずがめ座',e:'Aquarius',i:'♒'},
-  {n:'うお座',e:'Pisces',i:'♓'},
+const STARS=[
+  {n:'おひつじ座',e:'Aries',i:'♈'},{n:'おうし座',e:'Taurus',i:'♉'},
+  {n:'ふたご座',e:'Gemini',i:'♊'},{n:'かに座',e:'Cancer',i:'♋'},
+  {n:'しし座',e:'Leo',i:'♌'},{n:'おとめ座',e:'Virgo',i:'♍'},
+  {n:'てんびん座',e:'Libra',i:'♎'},{n:'さそり座',e:'Scorpio',i:'♏'},
+  {n:'いて座',e:'Sagittarius',i:'♐'},{n:'やぎ座',e:'Capricorn',i:'♑'},
+  {n:'みずがめ座',e:'Aquarius',i:'♒'},{n:'うお座',e:'Pisces',i:'♓'},
 ];
 
-const MBTI_LIST = [
+const MBTI_LIST=[
   {c:'INTJ',n:'建築家'},{c:'INTP',n:'論理学者'},{c:'ENTJ',n:'指揮官'},{c:'ENTP',n:'討論者'},
   {c:'INFJ',n:'提唱者'},{c:'INFP',n:'仲介者'},{c:'ENFJ',n:'主人公'},{c:'ENFP',n:'運動家'},
   {c:'ISTJ',n:'管理者'},{c:'ISFJ',n:'擁護者'},{c:'ESTJ',n:'幹部'},{c:'ESFJ',n:'領事'},
   {c:'ISTP',n:'巨匠'},{c:'ISFP',n:'冒険家'},{c:'ESTP',n:'起業家'},{c:'ESFP',n:'エンターテイナー'},
 ];
 
-const GIFTS = {
-  'ネタ':    {color:'#ff6eb4',bg:'#fff0f8',items:['もういっかい！','ダウト','ざわざわ','炎','体感','乗りなよ','降りろ','しょっ','激熱','まぶしい','世界一','のの字','EXIT','いつもので','カー','コー','はて？','やれやれ','ハムスター','完全燃焼','ええちゃん','最強','スリスリ','中病','グー','ふぅーー！！','そんなバナナ','メシウマ','うごく虫','はははは','あざとい','おいしーpo','あとは頼んだ','おきしま','まかせろり','ドヤリ','アンジ','せんだ','漢','玉','沼','鳥肌注意','zzz','やりある','ふひひ','黒','コッ','タレン','虫眼鏡','逆コネ','もや','アチィ！','っだっ！！','かがん？','青石鹸','スマホ','昭和テレビ','カエル','ガッツ','アイス','かき氷','蒸籠','ダウト200','石300','バブル','タイムセール','特割','ガムテ','ダウト②','丸300','掃除機','蝋燭','しらすびん','ポーション？','nnnn','刺客','ビックリ','パトカー','たこ焼き','REC','フライパン','かすみ','カトラリー','しらす驚','カエル500','宝箱','カクテル','ネタ①','ネタ②','ネタ③','ネタ④','ネタ⑤','ネタ⑥','ネタ⑦']},
-  '笑':     {color:'#3dcc7a',bg:'#f0fff6',items:['www','草','ドッ','ふわ','草(緑)','おもしろー','ガハハ','ズコー','しらす笑','しらす汗','太陽しらす','グレーしらす','なす','シャムシャ','ウケる','草100','まあまあ♪','んなアホな','ホンマや']},
-  '定番':   {color:'#5b9fff',bg:'#f0f6ff',items:Array.from({length:145},(_,i)=>`定番${String(i+1).padStart(3,'0')}`)},
-  'えらい': {color:'#ffca3a',bg:'#fffdf0',items:['キリおめ','ナイギコ','ナイス','かわいい','えぐぐ','すごい','すばら','たのしみ','渦','拍手','エモい','チルい','神','100','良さそう','世界','ええちゃん','天才か！？','最強','かしこ','がっつい','イケボ','オサレ','クール','アンジ','漢','祝いたい','おいしーpo','よかろう','かわぼ','耳が幸せ','やりある','えらい','Congratulations','えらいNEW','紙吹雪200','手200','エモい500','やくそく','ペンギン','バルーン','HAPPY BIRTH DAY','かわいい！3000','ハート5000','手7000','HAPPY BIRTHDAY10000','えらい②']},
-  '挨拶':   {color:'#a06aff',bg:'#f8f0ff',items:['はろー！','ようこそ','おつかれさま','おはよう','おやすみ','いってきます','いってらっしゃい','初見さんウェルカム','遅れた！！','すぐ戻る','噴水','こんばんは','バイバイ','握手','おかえり','おじゃまします','ただいま','やってます？','らっしゃっせい！','フロリダ','しこむど','ちょい落ち','サラダバー','スッ','うごく虫','zzz','やりある','こんにちは','また来ね！','おやすみ800','あとは頼んだ','おきしま','またね','参上','挨拶①']},
-  'ステージ':{color:'#ff8c42',bg:'#fff6f0',items:['もういっかい！','クラッカー','バラ','ペンライト赤','ペンライトピンク','ペンライト水','ペンライト黄','ペンライト黄緑','ペンライト白','拍手','ペンライト緑','中病','アフロ','ペンライトピンク2','ペンライトグレー','ペンライトパープル','ペンライトグリーン2','ペンライト黒','いつもので','もっと','うちわ','チャーミング','しらす指','ふぅーー！！','キャーッ！','鳥肌注意','歌神降臨','カラオケ','スポットライト','紙吹雪','花','手袋','カチンコ','スクリーン','もういっかい500','ミラーボール','花束','スポットライト500','VIP','クラゲ','ライトアップ','コンサート']},
-  'LOVE':   {color:'#ff5c6a',bg:'#fff0f2',items:['ハート200pt','すごっていいね500pt','指輪500pt','キューピッド500pt','ときめき1pt','ハートBig5pt','かわいい5pt','(照)5pt','濃密な愛500pt','しらすとハート500pt','すこ♡1000pt','かわいい！3000pt','キャーッ！5pt','あざとい5pt','かわぼ5pt','呼んだ？5pt','夢5000pt','手7000pt','だいすき10000pt','あふれる想い30000pt']},
+const GIFTS={
+  'ネタ':{color:'#ff6eb4',bg:'#fff0f8',items:['もういっかい！','ダウト','ざわざわ','炎','非常口','いつもので','かー','つー','一体感','乗りなッ！','乗りろ…','しーっ','はて…？','やれやれ','ぱぁ。','完全燃焼','激熱','まぶしい','世界一','祭うちわ','ええやん','最強','スリスリ','厨二病','拳','ふぅー!!','そんなバナナ','メシウマ','アニキー！','仰せのままに','漢','鉄アレイ','しおしお','ヒャッホー！','あざとい','おもしれーやつ','沼','鳥肌注意','すやぁ…','やりおる','あとは頼んだ','おねぎします。','まかセロリ','ドヤッ','ふりむ','ご乱心','コッ☆','ダジャレ警察','プチ岐阜','逆にね','もやし','ンジャメナ','話題こか？','ほこり','チャージっ！','ひんやりタイム','アヂッ','…つむっ！','からの〜？','へぇ','黒歴史','フラグ','画伯降臨','平成','昭和','江戸','おかん','ツンデレダイス','しらすまん','ダウト','爆弾','カチコチ','蝋燭','どーなっちゃうの','お掃除','令和','タイムセール','嫁に来ないかそういうことだぞ','ん…？','配信者発見','集中線','警察だ!!','パイ投げ','たらい落とし','しらすレインボー','ギガブルーム','まだ大丈夫','気配感知','REC','宝箱','あちらのお客様からです','おばけしらす','オール']},
+  '笑':{color:'#3dcc7a',bg:'#f0fff6',items:['www','草','ドッ','かぷかぷ','こらえ笑い','ブフォッ','微笑','真顔','草(植物)','おもしろー','ガハハ','ズコー','座布団','ビタミン不足','ウケる','またまたぁ','んなアホな','ほんまや','草(大)']},
+  '定番':{color:'#5b9fff',bg:'#f0f6ff',items:['うんうん','なるほど','わかる','わからん','爆笑','号泣','考え中','好物','ふ〜ん','・・・','？','！？','ありがとう！','やだ','ダウト','WWW','草','神','キャンディ','炎','握手','ハイ！','助かる','クラッカー','良さそう','クローバー','ドリンク','ぴえん','バラ','いつもので','一体感','ドッ','ごはん','サラダバー','草（植物）','えへへ','うぐぅ…','ガクブル','サァー','ナムナム','ヒェッ','ちょっと','むっちゃ','もっと','休んで！','寝て！','食べて！','充電中','エナジードリンク','拍手','おかわり','満腹','空腹','オサレ','いえーい！(ホシーカ)','ごっつぁんです','じゅるり','きゅるん（ユラミィ）','ごろごろ（ねこころ）','ぺこぺこ（つむまる）','あわわ','しおしお','ぽかぽか','ウケる','ビクッ！？','ファイティン','？？？','ぱぁぁ','ふんふん','ふわふわ','メンタルブレイク','いっくよー！','ぱぁ','ヒソヒソ','ポカーン','閃き','のど飴','シャキーン！','キラキラ','ひんやりタイム','…どれ？','はらたいこ','ぴたんぴたん','わいわい','ノリノリ','ふりふり','草(大)','お茶','えらい','thank you','うれピーマン','クラッカー','バラ(大)','御意','しらすまん','ダウト','怒り','ポジティブ足りてる？','パンケーキ','パンケーキ','パンケーキ','ちょっと待ったああ！','頑張れ','乾杯','エモい','花束','ありがとう','助かる','ん…？','うわぁぁん','ウインクチャレンジ','猫耳チャレンジ','結界','タピオカ','くす玉','予言タイム','覚醒','缶詰(風船)','イリアム特製パフェ','缶詰(花)']},
+  'えらい':{color:'#ffca3a',bg:'#fffdf0',items:['キリおめ','ナイギフ','ナイス','かわいい','神','１００点','良さそう','世界一','えぐぐ','すごい','すばら','たのしみ','ええやん','天才か！？','最強','かしこ','はなまる','拍手','エモい','チルい','かっこいい','イケボ','オサレ','クール','アニキーー！','漢','あざとい','おもしれーやつ','かわぼ','癒し〜','耳が幸せ','やりおる','よかろう','えらい','コングラ','happy birthday(ねこころ)','happy birthday(ホシーカ)','クラッカー200Pt','拍手200Pt','エモい','たいへんよくできました','お見事！','くす玉','ケーキ(誕生日)','かわいい！3000Pt','尊い','なでなで','ハッピーバースデー']},
+  '挨拶':{color:'#a06aff',bg:'#f8f0ff',items:['はろー！','ようこそ','おつかれさま','おはよう','こんばんは','バイバイ','握手','おかえり','おやすみ','いってきます','いってらっしゃい','いらっしゃい','おじゃまします','ただいま','やってる？','らっしゃっせい！','初見さんヤッホー','遅れた!!','すぐ戻る！','トイレ','フロリダ','しごともど','ちょい落ち','サラダバー','スッ','ヤッホー（さぼぽん）','すやぁ…','やりおる','あとは頼んだ','おねぎします。','またね','こんにちは','また来るね！','おやすみ']},
+  'ステージ':{color:'#ff8c42',bg:'#fff6f0',items:['もういっかい！','クラッカー','バラ','サイリウムオレンジ','サイリウムピンク','サイリウム白','サイリウム紫','サイリウム緑','サイリウム赤','サイリウム白','サイリウム黄色','サイリウム黄緑','サイリウム黒','いつもので','もっと','祭うちわ','拍手','サイリウム葱','厨二病','アフロしらす','アンコール','ヘドバン','ふぅー！！','キャーッ！！','鳥肌注意','歌神降臨','音符','リクエスト','クラッカー200Pt','バラ(大)','拍手200Pt','よーい','サーチライト','もういっかい','花束','スポットライト','v.i.p','ミラーボール','くす玉','ライト＆フォグ','ライブステージ','花火']},
+  'LOVE':{color:'#ff5c6a',bg:'#fff0f2',items:['好物','ハート','かわいい','照れ','キャーッ！','あざとい','かわぼ','呼んだ？','ハート(大)','すこっていい？','嫁に来ないか…？','ズキューン！','唐突な愛','ウインクタイム','すこ','かわいい！3000Pt','尊い','なでなで','大好き','あふれる想い']},
 };
 
 // ===== STATE =====
-const state = {
-  pref: new Set(),
-  star: new Set(),
-  mbti: new Set(),
-  gift: Object.fromEntries(Object.keys(GIFTS).map(k=>[k, new Set()])),
-  counters: [],
-  gachaHistory: [],
+const state={
+  pref:new Set(), star:new Set(), mbti:new Set(),
+  gift:Object.fromEntries(Object.keys(GIFTS).map(k=>[k,new Set()])),
+  counters:[], gachaHistory:[],
 };
 
-// ===== COLOR THEME =====
-const PRESETS = ['#4ecde6','#ff6eb4','#a06aff','#3dcc7a','#ff8c42','#ffca3a','#ff5c6a','#5b9fff','#e060c0','#00b894'];
-
-function hexToRgb(hex) {
-  const r = parseInt(hex.slice(1,3),16);
-  const g = parseInt(hex.slice(3,5),16);
-  const b = parseInt(hex.slice(5,7),16);
-  return {r,g,b};
+// ===== COLOR =====
+const PRESETS=['#4ecde6','#ff6eb4','#a06aff','#3dcc7a','#ff8c42','#ffca3a','#ff5c6a','#5b9fff','#e060c0','#00b894'];
+function hexToRgb(h){return{r:parseInt(h.slice(1,3),16),g:parseInt(h.slice(3,5),16),b:parseInt(h.slice(5,7),16)}}
+function lighten(h,a=.82){const{r,g,b}=hexToRgb(h);const m=c=>Math.round(c+(255-c)*a);return`rgb(${m(r)},${m(g)},${m(b)})`}
+function darken(h,a=.25){const{r,g,b}=hexToRgb(h);const d=c=>Math.round(c*(1-a));return`rgb(${d(r)},${d(g)},${d(b)})`}
+function applyColor(hex){
+  const r=document.documentElement;
+  r.style.setProperty('--ac',hex);
+  r.style.setProperty('--ac-light',lighten(hex,.85));
+  r.style.setProperty('--ac-dark',darken(hex,.2));
+  r.style.setProperty('--border',lighten(hex,.7));
+  r.style.setProperty('--bg',lighten(hex,.93));
 }
-function lighten(hex, amt=0.82) {
-  const {r,g,b} = hexToRgb(hex);
-  const mix = (c) => Math.round(c + (255-c)*amt);
-  return `rgb(${mix(r)},${mix(g)},${mix(b)})`;
-}
-function darken(hex, amt=0.25) {
-  const {r,g,b} = hexToRgb(hex);
-  const d = (c) => Math.round(c*(1-amt));
-  return `rgb(${d(r)},${d(g)},${d(b)})`;
-}
-
-function applyColor(hex) {
-  const root = document.documentElement;
-  root.style.setProperty('--ac', hex);
-  root.style.setProperty('--ac-light', lighten(hex, 0.85));
-  root.style.setProperty('--ac-dark', darken(hex, 0.2));
-  root.style.setProperty('--border', lighten(hex, 0.7));
-  root.style.setProperty('--bg', lighten(hex, 0.93));
-}
-
-function buildPresets() {
-  const c = document.getElementById('color-presets');
-  c.innerHTML = '';
-  PRESETS.forEach(hex => {
-    const btn = document.createElement('div');
-    btn.className = 'color-preset';
-    btn.style.background = hex;
-    btn.onclick = () => {
+function buildPresets(){
+  const c=document.getElementById('color-presets');
+  c.innerHTML='';
+  PRESETS.forEach(hex=>{
+    const btn=document.createElement('div');
+    btn.className='color-preset';
+    btn.style.background=hex;
+    btn.onclick=()=>{
       document.querySelectorAll('.color-preset').forEach(b=>b.classList.remove('selected'));
       btn.classList.add('selected');
-      document.getElementById('custom-color-input').value = hex;
+      document.getElementById('custom-color-input').value=hex;
       applyColor(hex);
     };
     c.appendChild(btn);
   });
   c.children[0].classList.add('selected');
 }
-
-function openColorModal() { document.getElementById('color-modal').classList.add('open'); }
-function closeColorModal() {
-  const hex = document.getElementById('custom-color-input').value;
-  applyColor(hex);
+function openColorModal(){document.getElementById('color-modal').classList.add('open')}
+function closeColorModal(){
+  applyColor(document.getElementById('custom-color-input').value);
   document.getElementById('color-modal').classList.remove('open');
 }
-document.getElementById('custom-color-input').addEventListener('input', function() {
+document.getElementById('custom-color-input').addEventListener('input',function(){
   document.querySelectorAll('.color-preset').forEach(b=>b.classList.remove('selected'));
   applyColor(this.value);
 });
 
-// ===== TABS =====
-const TABS = [
-  {id:'pref',    label:'都道府県', icon:'🗾'},
-  {id:'star',    label:'星座',     icon:'⭐'},
-  {id:'mbti',    label:'MBTI',     icon:'🧠'},
-  {id:'gift',    label:'ギフト',   icon:'🎁'},
-  {id:'counter', label:'カウンター',icon:'🚪'},
-  {id:'gacha',   label:'企画ガチャ',icon:'🎲'},
+// ===== TABS + SIDEBAR =====
+const TABS=[
+  {id:'pref',label:'都道府県',icon:'🗾'},
+  {id:'star',label:'星座',icon:'⭐'},
+  {id:'mbti',label:'MBTI',icon:'🧠'},
+  {id:'gift',label:'ギフト',icon:'🎁'},
+  {id:'counter',label:'カウンター',icon:'🚪'},
+  {id:'gacha',label:'企画ガチャ',icon:'🎲'},
 ];
-
-function initTabs() {
-  const c = document.getElementById('tabs');
-  c.innerHTML = '';
-  TABS.forEach(t => {
-    const b = document.createElement('button');
-    b.className = 'tab';
-    b.id = 'tab-' + t.id;
-    b.innerHTML = `<span>${t.icon}</span>${t.label}`;
-    b.onclick = () => switchTab(t.id);
-    c.appendChild(b);
+function initTabs(){
+  const tc=document.getElementById('tabs');
+  const sc=document.getElementById('sidebar');
+  tc.innerHTML=''; sc.innerHTML='';
+  TABS.forEach(t=>{
+    // mobile tab
+    const b=document.createElement('button');
+    b.className='tab'; b.id='tab-'+t.id;
+    b.innerHTML=`<span>${t.icon}</span>${t.label}`;
+    b.onclick=()=>switchTab(t.id);
+    tc.appendChild(b);
+    // pc sidebar
+    const s=document.createElement('div');
+    s.className='sidebar-item'; s.id='sidebar-'+t.id;
+    s.innerHTML=`<span class="sidebar-icon">${t.icon}</span>${t.label}`;
+    s.onclick=()=>switchTab(t.id);
+    sc.appendChild(s);
   });
 }
-
-function switchTab(id) {
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+function switchTab(id){
+  document.querySelectorAll('.tab,.sidebar-item').forEach(e=>e.classList.remove('active'));
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  document.getElementById('page-'+id).classList.add('active');
-  document.getElementById('tab-'+id).scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+  const tab=document.getElementById('tab-'+id);
+  const side=document.getElementById('sidebar-'+id);
+  const page=document.getElementById('page-'+id);
+  if(tab){tab.classList.add('active');tab.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'})}
+  if(side)side.classList.add('active');
+  if(page)page.classList.add('active');
 }
 
 // ===== PROGRESS =====
-function updateProg(sec, total) {
-  const count = state[sec].size;
-  const bar = document.getElementById('bar-'+sec);
-  const pt  = document.getElementById('prog-text-'+sec);
-  const dn  = document.getElementById('done-'+sec);
-  if (bar) bar.style.width = (total ? count/total*100 : 0) + '%';
-  if (pt)  { pt.innerHTML=`<span>${count}</span> / ${total}`; pt.className='prog-text'+(count===total&&total?' done':''); }
-  if (dn)  dn.innerHTML = (count===total&&total>0) ? '<span class="done-badge">🎉 コンプリート！</span>' : '';
-  if (count===total&&total>0) celebrate();
+function updateProg(sec,total){
+  const count=state[sec].size;
+  const bar=document.getElementById('bar-'+sec);
+  const pt=document.getElementById('prog-text-'+sec);
+  const dn=document.getElementById('done-'+sec);
+  if(bar)bar.style.width=(total?count/total*100:0)+'%';
+  if(pt){pt.innerHTML=`<span>${count}</span> / ${total}`;pt.className='prog-text'+(count===total&&total?' done':'');}
+  if(dn)dn.innerHTML=(count===total&&total>0)?'<span class="done-badge">🎉 コンプリート！</span>':'';
+  if(count===total&&total>0)celebrate();
 }
-
-function updateGiftCat(cat) {
-  const count = state.gift[cat].size;
-  const total = GIFTS[cat].items.length;
-  const el  = document.getElementById('cat-count-'+cat);
-  const bar = document.getElementById('bar-gift-'+cat);
-  if (el)  { el.textContent=`${count} / ${total}`; el.className='cat-count'+(count===total?' done':''); }
-  if (bar) bar.style.width = (count/total*100)+'%';
+function updateGiftCat(cat){
+  const count=state.gift[cat].size,total=GIFTS[cat].items.length;
+  const el=document.getElementById('cat-count-'+cat);
+  const bar=document.getElementById('bar-gift-'+cat);
+  if(el){el.textContent=`${count} / ${total}`;el.className='cat-count'+(count===total?' done':'');}
+  if(bar)bar.style.width=(count/total*100)+'%';
 }
-
-function updateGiftAll() {
-  const total = Object.values(GIFTS).reduce((s,g)=>s+g.items.length,0);
-  const count = Object.values(state.gift).reduce((s,st)=>s+st.size,0);
-  const bar = document.getElementById('bar-gift-all');
-  const pt  = document.getElementById('prog-text-gift-all');
-  const dn  = document.getElementById('done-gift-all');
-  if (bar) bar.style.width = (count/total*100)+'%';
-  if (pt)  { pt.innerHTML=`<span>${count}</span> / ${total}`; pt.className='prog-text'+(count===total?' done':''); }
-  if (dn)  dn.innerHTML = (count===total&&total>0) ? '<span class="done-badge">🎉 コンプリート！</span>' : '';
-  if (count===total&&total>0) celebrate();
+function updateGiftAll(){
+  const total=Object.values(GIFTS).reduce((s,g)=>s+g.items.length,0);
+  const count=Object.values(state.gift).reduce((s,st)=>s+st.size,0);
+  const bar=document.getElementById('bar-gift-all');
+  const pt=document.getElementById('prog-text-gift-all');
+  const dn=document.getElementById('done-gift-all');
+  if(bar)bar.style.width=(count/total*100)+'%';
+  if(pt){pt.innerHTML=`<span>${count}</span> / ${total}`;pt.className='prog-text'+(count===total?' done':'');}
+  if(dn)dn.innerHTML=(count===total&&total>0)?'<span class="done-badge">🎉 コンプリート！</span>':'';
+  if(count===total&&total>0)celebrate();
 }
 
 // ===== RESET =====
-function resetSection(sec) {
+function resetSection(sec){
   state[sec].clear();
-  const gridId = {pref:'grid-pref',star:'grid-star',mbti:'grid-mbti'}[sec];
-  const total  = {pref:PREFS.length,star:STARS.length,mbti:MBTI_LIST.length}[sec];
-  const grid = document.getElementById(gridId);
-  if (grid) {
-    grid.querySelectorAll('.check-item,.mbti-item').forEach(el => {
-      el.classList.remove('checked');
-      const cb = el.querySelector('.cb');
-      if (cb) { cb.textContent=''; cb.style.cssText=''; }
-    });
-  }
-  updateProg(sec, total);
+  const gridId={pref:'grid-pref',star:'grid-star',mbti:'grid-mbti'}[sec];
+  const total={pref:PREFS.length,star:STARS.length,mbti:MBTI_LIST.length}[sec];
+  const grid=document.getElementById(gridId);
+  if(grid)grid.querySelectorAll('.check-item,.mbti-item').forEach(el=>{
+    el.classList.remove('checked');
+    const cb=el.querySelector('.cb');
+    if(cb){cb.textContent='';cb.style.cssText='';}
+  });
+  updateProg(sec,total);
 }
-
-function resetGiftCat(cat) {
+function resetGiftCat(cat){
   state.gift[cat].clear();
   rebuildGifts();
 }
-
-function resetGiftAll() {
+function resetGiftAll(){
   Object.keys(state.gift).forEach(k=>state.gift[k].clear());
   rebuildGifts();
 }
-
-function resetAll() {
-  ['pref','star','mbti'].forEach(sec => {
+function resetAll(){
+  ['pref','star','mbti'].forEach(sec=>{
     state[sec].clear();
     const gridId={pref:'grid-pref',star:'grid-star',mbti:'grid-mbti'}[sec];
     const total={pref:PREFS.length,star:STARS.length,mbti:MBTI_LIST.length}[sec];
     const grid=document.getElementById(gridId);
-    if(grid) grid.querySelectorAll('.check-item,.mbti-item').forEach(el=>{
+    if(grid)grid.querySelectorAll('.check-item,.mbti-item').forEach(el=>{
       el.classList.remove('checked');
       const cb=el.querySelector('.cb');
       if(cb){cb.textContent='';cb.style.cssText='';}
     });
-    updateProg(sec, total);
+    updateProg(sec,total);
   });
   Object.keys(state.gift).forEach(k=>state.gift[k].clear());
   rebuildGifts();
-  state.counters.forEach(c => { c.value = c.initVal; updateCounterDisplay(c.id); });
+  state.counters.forEach(c=>{c.value=c.initVal;updateCounterDisplay(c.id);});
 }
 
 // ===== BUILD PREF =====
-function buildPref() {
-  const g = document.getElementById('grid-pref');
-  g.innerHTML = '';
-  PREFS.forEach((p, i) => {
-    const el = document.createElement('div');
-    el.className = 'check-item' + (state.pref.has(i) ? ' checked' : '');
-    el.setAttribute('data-idx', i);
-    el.innerHTML = `<div class="cb">${state.pref.has(i)?'✓':''}</div><div class="cl">${p}</div>`;
-    el.onclick = () => {
-      if (state.pref.has(i)) { state.pref.delete(i); el.classList.remove('checked'); el.querySelector('.cb').textContent=''; }
-      else { state.pref.add(i); el.classList.add('checked'); el.querySelector('.cb').textContent='✓'; }
-      updateProg('pref', PREFS.length);
+function buildPref(){
+  const g=document.getElementById('grid-pref');
+  g.innerHTML='';
+  PREFS.forEach((p,i)=>{
+    const el=document.createElement('div');
+    el.className='check-item'+(state.pref.has(i)?' checked':'');
+    el.setAttribute('data-idx',i);
+    el.innerHTML=`<div class="cb">${state.pref.has(i)?'✓':''}</div><div class="cl">${p}</div>`;
+    el.onclick=()=>{
+      if(state.pref.has(i)){state.pref.delete(i);el.classList.remove('checked');el.querySelector('.cb').textContent='';}
+      else{state.pref.add(i);el.classList.add('checked');el.querySelector('.cb').textContent='✓';}
+      updateProg('pref',PREFS.length);
     };
     g.appendChild(el);
   });
-  updateProg('pref', PREFS.length);
+  updateProg('pref',PREFS.length);
 }
 
 // ===== BUILD STAR =====
-function buildStar() {
-  const g = document.getElementById('grid-star');
-  g.innerHTML = '';
-  STARS.forEach((s, i) => {
-    const el = document.createElement('div');
-    el.className = 'check-item' + (state.star.has(i) ? ' checked' : '');
-    el.setAttribute('data-idx', i);
-    el.innerHTML = `<div class="cb">${state.star.has(i)?'✓':''}</div><div><div class="cl">${s.i} ${s.n}</div><div class="cs">${s.e}</div></div>`;
-    el.onclick = () => {
-      if (state.star.has(i)) { state.star.delete(i); el.classList.remove('checked'); el.querySelector('.cb').textContent=''; }
-      else { state.star.add(i); el.classList.add('checked'); el.querySelector('.cb').textContent='✓'; }
-      updateProg('star', STARS.length);
+function buildStar(){
+  const g=document.getElementById('grid-star');
+  g.innerHTML='';
+  STARS.forEach((s,i)=>{
+    const el=document.createElement('div');
+    el.className='check-item'+(state.star.has(i)?' checked':'');
+    el.innerHTML=`<div class="cb">${state.star.has(i)?'✓':''}</div><div><div class="cl">${s.i} ${s.n}</div><div class="cs">${s.e}</div></div>`;
+    el.onclick=()=>{
+      if(state.star.has(i)){state.star.delete(i);el.classList.remove('checked');el.querySelector('.cb').textContent='';}
+      else{state.star.add(i);el.classList.add('checked');el.querySelector('.cb').textContent='✓';}
+      updateProg('star',STARS.length);
     };
     g.appendChild(el);
   });
-  updateProg('star', STARS.length);
+  updateProg('star',STARS.length);
   buildStarIllos();
 }
-
-// 星座イラスト SVGデータ [stars, lines]
-const STAR_ILLOS = [
-  // おひつじ
+const STAR_ILLOS=[
   {stars:[[35,20],[55,30],[70,45],[60,60],[40,55]],lines:[[0,1],[1,2],[2,3],[3,4]]},
-  // おうし
   {stars:[[20,30],[40,20],[60,25],[70,40],[50,50],[30,55],[65,55]],lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[2,6]]},
-  // ふたご
   {stars:[[25,15],[25,40],[25,65],[65,15],[65,40],[65,65]],lines:[[0,1],[1,2],[3,4],[4,5],[0,3],[1,4],[2,5]]},
-  // かに
   {stars:[[35,20],[55,20],[25,45],[45,40],[65,45],[35,65],[55,65]],lines:[[0,2],[0,4],[1,2],[1,4],[2,5],[4,6],[3,5],[3,6]]},
-  // しし
   {stars:[[20,60],[35,40],[50,30],[65,40],[70,60],[55,65],[40,70],[50,50]],lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,0],[3,7]]},
-  // おとめ
   {stars:[[30,20],[50,25],[65,40],[60,60],[40,65],[25,50],[45,45]],lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,1],[6,3]]},
-  // てんびん
   {stars:[[45,15],[20,45],[70,45],[35,65],[55,65]],lines:[[0,1],[0,2],[1,3],[2,4],[3,4],[1,4]]},
-  // さそり
   {stars:[[20,25],[35,30],[50,30],[60,40],[65,55],[55,65],[45,70],[55,75],[65,72]],lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8]]},
-  // いて
   {stars:[[25,65],[40,50],[55,35],[70,25],[60,55],[40,70],[65,60]],lines:[[0,1],[1,2],[2,3],[1,4],[4,5],[2,6],[3,6]]},
-  // やぎ
   {stars:[[20,30],[40,20],[60,28],[70,45],[60,62],[40,68],[22,58]],lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,0]]},
-  // みずがめ
   {stars:[[15,40],[30,30],[50,35],[70,30],[75,45],[55,50],[35,55],[15,60]],lines:[[0,1],[1,2],[2,3],[3,4],[2,5],[5,6],[6,7]]},
-  // うお
   {stars:[[20,25],[35,20],[50,30],[40,45],[25,50],[15,42],[55,55],[65,60],[70,48],[60,40]],lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[6,7],[7,8],[8,9],[9,6],[3,9]]},
 ];
-
-function buildStarIllos() {
-  const g = document.getElementById('star-illo-grid');
-  g.innerHTML = '';
-  STARS.forEach((s, i) => {
-    const illo = STAR_ILLOS[i];
-    const card = document.createElement('div');
-    card.className = 'star-illo-card';
-
-    let svgLines = illo.lines.map(([a,b]) =>
-      `<line x1="${illo.stars[a][0]}" y1="${illo.stars[a][1]}" x2="${illo.stars[b][0]}" y2="${illo.stars[b][1]}" stroke="var(--ac)" stroke-width="1.5" opacity="0.6"/>`
-    ).join('');
-    let svgStars = illo.stars.map(([x,y]) =>
-      `<circle cx="${x}" cy="${y}" r="3" fill="var(--ac-dark)"/>`
-    ).join('');
-
-    card.innerHTML = `
-      <svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" style="background:#f8fbff;border-radius:10px">
-        <rect width="90" height="90" fill="var(--bg)" rx="8"/>
-        ${svgLines}${svgStars}
-        <text x="45" y="84" text-anchor="middle" font-size="14" fill="var(--ac)">${s.i}</text>
-      </svg>
-      <div class="star-illo-name">${s.n}</div>
-      <div class="star-illo-en">${s.e}</div>
-    `;
+function buildStarIllos(){
+  const g=document.getElementById('star-illo-grid');
+  g.innerHTML='';
+  STARS.forEach((s,i)=>{
+    const illo=STAR_ILLOS[i];
+    const card=document.createElement('div');
+    card.className='star-illo-card';
+    const lines=illo.lines.map(([a,b])=>`<line x1="${illo.stars[a][0]}" y1="${illo.stars[a][1]}" x2="${illo.stars[b][0]}" y2="${illo.stars[b][1]}" stroke="var(--ac)" stroke-width="1.5" opacity=".6"/>`).join('');
+    const dots=illo.stars.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3" fill="var(--ac-dark)"/>`).join('');
+    card.innerHTML=`<svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg"><rect width="90" height="90" fill="var(--bg)" rx="8"/>${lines}${dots}<text x="45" y="84" text-anchor="middle" font-size="14" fill="var(--ac)">${s.i}</text></svg><div class="star-illo-name">${s.n}</div><div class="star-illo-en">${s.e}</div>`;
     g.appendChild(card);
   });
 }
 
 // ===== BUILD MBTI =====
-function buildMBTI() {
-  const g = document.getElementById('grid-mbti');
-  g.innerHTML = '';
-  MBTI_LIST.forEach((m, i) => {
-    const el = document.createElement('div');
-    el.className = 'mbti-item' + (state.mbti.has(i) ? ' checked' : '');
-    el.setAttribute('data-idx', i);
-    el.innerHTML = `<div class="cb">${state.mbti.has(i)?'✓':''}</div><div><div class="mbti-code">${m.c}</div><div class="mbti-name">${m.n}</div></div>`;
-    el.onclick = () => {
-      if (state.mbti.has(i)) { state.mbti.delete(i); el.classList.remove('checked'); el.querySelector('.cb').textContent=''; el.querySelector('.cb').style.cssText=''; }
-      else { state.mbti.add(i); el.classList.add('checked'); el.querySelector('.cb').textContent='✓'; }
-      updateProg('mbti', MBTI_LIST.length);
+function buildMBTI(){
+  const g=document.getElementById('grid-mbti');
+  g.innerHTML='';
+  MBTI_LIST.forEach((m,i)=>{
+    const el=document.createElement('div');
+    el.className='mbti-item'+(state.mbti.has(i)?' checked':'');
+    el.innerHTML=`<div class="cb">${state.mbti.has(i)?'✓':''}</div><div><div class="mbti-code">${m.c}</div><div class="mbti-name">${m.n}</div></div>`;
+    el.onclick=()=>{
+      if(state.mbti.has(i)){state.mbti.delete(i);el.classList.remove('checked');el.querySelector('.cb').textContent='';el.querySelector('.cb').style.cssText='';}
+      else{state.mbti.add(i);el.classList.add('checked');el.querySelector('.cb').textContent='✓';}
+      updateProg('mbti',MBTI_LIST.length);
     };
     g.appendChild(el);
   });
-  updateProg('mbti', MBTI_LIST.length);
+  updateProg('mbti',MBTI_LIST.length);
 }
 
 // ===== BUILD GIFTS =====
-function rebuildGifts() {
-  const c = document.getElementById('gift-content');
-  const total = Object.values(GIFTS).reduce((s,g)=>s+g.items.length,0);
-  c.innerHTML = `
-    <div class="page-head" style="margin-bottom:12px">
-      <div class="page-head-top">
-        <div class="page-title">🎁 全ギフト耐久</div>
-        <button class="reset-btn" onclick="resetGiftAll()">全リセット</button>
-      </div>
-      <div class="prog-row">
-        <div class="prog-text" id="prog-text-gift-all"><span>0</span> / ${total}</div>
-        <div id="done-gift-all"></div>
-      </div>
-      <div class="prog-bar-wrap"><div class="prog-bar" id="bar-gift-all" style="width:0%"></div></div>
-    </div>
-  `;
-  Object.entries(GIFTS).forEach(([cat, data]) => {
-    const card = document.createElement('div');
-    card.className = 'gift-cat-card';
-    card.innerHTML = `
-      <div class="gift-cat-head">
-        <div style="display:flex;align-items:center;gap:8px">
-          <span class="cat-pill" style="background:${data.bg};color:${data.color};border:2px solid ${data.color}44">${cat}</span>
-          <span class="cat-count" id="cat-count-${cat}">0 / ${data.items.length}</span>
-        </div>
-        <button class="reset-btn" onclick="resetGiftCat('${cat}')">リセット</button>
-      </div>
-      <div class="prog-bar-wrap" style="margin-bottom:9px"><div class="prog-bar" id="bar-gift-${cat}" style="background:${data.color};width:0%"></div></div>
-    `;
-    const grid = document.createElement('div');
-    grid.className = 'check-grid';
-    data.items.forEach((item, i) => {
-      const el = document.createElement('div');
-      const chk = state.gift[cat].has(i);
-      el.className = 'check-item' + (chk ? ' checked' : '');
-      if (chk) { el.style.borderColor=data.color; el.style.background=data.bg; }
-      el.innerHTML = `<div class="cb" style="${chk?`background:${data.color};border-color:${data.color};color:white`:''}">${chk?'✓':''}</div><div class="cl">${item}</div>`;
-      el.onclick = () => {
-        const on = state.gift[cat].has(i);
-        const cb = el.querySelector('.cb');
-        if (on) {
-          state.gift[cat].delete(i);
-          el.classList.remove('checked');
-          el.style.borderColor=''; el.style.background='';
-          cb.style.cssText=''; cb.textContent='';
-        } else {
-          state.gift[cat].add(i);
-          el.classList.add('checked');
-          el.style.borderColor=data.color; el.style.background=data.bg;
-          cb.style.cssText=`background:${data.color};border-color:${data.color};color:white`;
-          cb.textContent='✓';
-        }
-        updateGiftCat(cat);
-        updateGiftAll();
+function rebuildGifts(){
+  const c=document.getElementById('gift-content');
+  const total=Object.values(GIFTS).reduce((s,g)=>s+g.items.length,0);
+  c.innerHTML=`<div class="page-head" style="margin-bottom:12px"><div class="page-head-top"><div class="page-title">🎁 全ギフト耐久</div><button class="reset-btn" onclick="resetGiftAll()">全リセット</button></div><div class="prog-row"><div class="prog-text" id="prog-text-gift-all"><span>0</span> / ${total}</div><div id="done-gift-all"></div></div><div class="prog-bar-wrap"><div class="prog-bar" id="bar-gift-all" style="width:0%"></div></div></div>`;
+  Object.entries(GIFTS).forEach(([cat,data])=>{
+    const card=document.createElement('div');
+    card.className='gift-cat-card';
+    card.innerHTML=`<div class="gift-cat-head"><div style="display:flex;align-items:center;gap:8px"><span class="cat-pill" style="background:${data.bg};color:${data.color};border:2px solid ${data.color}44">${cat}</span><span class="cat-count" id="cat-count-${cat}">0 / ${data.items.length}</span></div><button class="reset-btn" onclick="resetGiftCat('${cat}')">リセット</button></div><div class="prog-bar-wrap" style="margin-bottom:9px"><div class="prog-bar" id="bar-gift-${cat}" style="background:${data.color};width:0%"></div></div>`;
+    const grid=document.createElement('div');
+    grid.className='gift-grid-inner';
+    data.items.forEach((item,i)=>{
+      const el=document.createElement('div');
+      const chk=state.gift[cat].has(i);
+      el.className='check-item'+(chk?' checked':'');
+      if(chk){el.style.borderColor=data.color;el.style.background=data.bg;}
+      el.innerHTML=`<div class="cb" style="${chk?`background:${data.color};border-color:${data.color};color:white`:''}">${chk?'✓':''}</div><div class="cl">${item}</div>`;
+      el.onclick=()=>{
+        const on=state.gift[cat].has(i);
+        const cb=el.querySelector('.cb');
+        if(on){state.gift[cat].delete(i);el.classList.remove('checked');el.style.borderColor='';el.style.background='';cb.style.cssText='';cb.textContent='';}
+        else{state.gift[cat].add(i);el.classList.add('checked');el.style.borderColor=data.color;el.style.background=data.bg;cb.style.cssText=`background:${data.color};border-color:${data.color};color:white`;cb.textContent='✓';}
+        updateGiftCat(cat);updateGiftAll();
       };
       grid.appendChild(el);
     });
@@ -688,119 +655,82 @@ function rebuildGifts() {
 }
 
 // ===== MULTI COUNTER =====
-let counterIdSeq = 0;
-let anyIdSeq = 0;
-
-function addCounter(name='', initVal=100) {
-  const id = ++counterIdSeq;
-  state.counters.push({id, name: name||`入室耐久${id}`, value: initVal, initVal});
+let counterIdSeq=0,anyIdSeq=0;
+function addCounter(name='',initVal=100){
+  const id=++counterIdSeq;
+  state.counters.push({id,name:name||`入室耐久${id}`,value:initVal,initVal});
   renderCounterList();
 }
-
-// 任意カウンター（任意－ [数] ー 任意＋ [数] ＋ 形式）
-function addAny() {
-  const id = ++anyIdSeq;
-  const list = document.getElementById('any-list');
-  const card = document.createElement('div');
-  card.className = 'any-card';
-  card.id = `any-card-${id}`;
-  card.innerHTML = `
-    <span class="any-label">任意－</span>
-    <input class="any-num-input" type="number" id="any-minus-val-${id}" value="3" min="1">
-    <button class="any-op-btn any-minus" onclick="doAny(${id},-1)">－</button>
-    <span class="any-label">任意＋</span>
-    <input class="any-num-input" type="number" id="any-plus-val-${id}" value="3" min="1">
-    <button class="any-op-btn any-plus" onclick="doAny(${id},+1)">＋</button>
-    <button class="any-del" onclick="document.getElementById('any-card-${id}').remove()" title="削除">✕</button>
-  `;
-  list.appendChild(card);
-}
-
-function doAny(id, sign) {
-  const inputId = sign < 0 ? `any-minus-val-${id}` : `any-plus-val-${id}`;
-  const v = parseInt(document.getElementById(inputId).value) || 1;
-  state.counters.forEach(c => {
-    c.value = Math.max(0, c.value + sign * v);
-    updateCounterDisplay(c.id);
-  });
-}
-
-function removeCounter(id) {
-  state.counters = state.counters.filter(c=>c.id!==id);
+function removeCounter(id){
+  state.counters=state.counters.filter(c=>c.id!==id);
   renderCounterList();
 }
-
-function changeCounterVal(id, delta) {
-  const c = state.counters.find(c=>c.id===id);
-  if (!c) return;
-  c.value = Math.max(0, c.value + delta);
+function updateCounterDisplay(id){
+  const c=state.counters.find(c=>c.id===id);
+  if(!c)return;
+  const el=document.getElementById(`cnum-${id}`);
+  if(el){el.textContent=c.value;el.className='counter-item-num'+(c.value<=10?' danger':'');}
+}
+function changeCount(id,n){
+  const c=state.counters.find(c=>c.id===id);
+  if(!c)return;
+  c.value=Math.max(0,c.value+n);
   updateCounterDisplay(id);
 }
-
-function doCustomChange(id, sign) {
-  const c = state.counters.find(c=>c.id===id);
-  if (!c) return;
-  const inputId = sign < 0 ? `custom-minus-${id}` : `custom-plus-${id}`;
-  const v = parseInt(document.getElementById(inputId).value) || 1;
-  c.value = Math.max(0, c.value + sign * v);
+function doCustomCount(id,sign){
+  const inp=document.getElementById(`ccustom-${id}`);
+  const v=parseInt(inp?.value)||1;
+  const c=state.counters.find(c=>c.id===id);
+  if(!c)return;
+  c.value=Math.max(0,c.value+sign*v);
   updateCounterDisplay(id);
 }
-
-function setCounterVal(id) {
-  const c = state.counters.find(c=>c.id===id);
-  if (!c) return;
-  const v = parseInt(document.getElementById(`set-input-${id}`).value);
-  if (!isNaN(v) && v >= 0) { c.value = v; c.initVal = v; updateCounterDisplay(id); }
-}
-
-function resetCounterVal(id) {
-  const c = state.counters.find(c=>c.id===id);
-  if (!c) return;
-  c.value = c.initVal;
+function setCounterVal(id){
+  const inp=document.getElementById(`cset-${id}`);
+  const v=parseInt(inp?.value);
+  const c=state.counters.find(c=>c.id===id);
+  if(!c||isNaN(v)||v<0)return;
+  c.value=v;c.initVal=v;
   updateCounterDisplay(id);
 }
-
-function updateCounterDisplay(id) {
-  const c = state.counters.find(c=>c.id===id);
-  if (!c) return;
-  const el = document.getElementById(`cnum-${id}`);
-  if (el) { el.textContent = c.value; el.className = 'counter-item-num' + (c.value <= 10 ? ' danger' : ''); }
+function resetCounterVal(id){
+  const c=state.counters.find(c=>c.id===id);
+  if(!c)return;
+  c.value=c.initVal;
+  updateCounterDisplay(id);
 }
-
-function renderCounterList() {
-  const list = document.getElementById('counter-list');
-  list.innerHTML = '';
-  state.counters.forEach(c => {
-    const card = document.createElement('div');
-    card.className = 'counter-item-card';
-    card.innerHTML = `
+function renderCounterList(){
+  const list=document.getElementById('counter-list');
+  list.innerHTML='';
+  state.counters.forEach(c=>{
+    const card=document.createElement('div');
+    card.className='counter-item-card';
+    card.innerHTML=`
       <div class="counter-item-top">
-        <input class="counter-item-name" type="text" value="${c.name}" placeholder="カウンター名"
-          oninput="state.counters.find(x=>x.id===${c.id}).name=this.value">
+        <input class="counter-item-name" type="text" value="${c.name}" oninput="state.counters.find(x=>x.id===${c.id}).name=this.value">
         <button class="counter-item-del" onclick="removeCounter(${c.id})">✕</button>
         <button class="reset-btn" onclick="resetCounterVal(${c.id})">リセット</button>
       </div>
       <span class="counter-item-num${c.value<=10?' danger':''}" id="cnum-${c.id}">${c.value}</span>
       <div class="counter-item-btns">
-        <button class="btn-mid btn-minus" onclick="changeCounterVal(${c.id},-1)">－ 1</button>
-        <button class="btn-mid btn-plus"  onclick="changeCounterVal(${c.id},+1)">＋ 1</button>
+        <button class="btn-mid" style="background:#fff0f2;color:var(--red);border:2px solid #ffd0d6" onclick="changeCount(${c.id},-1)">－1</button>
+        <button class="btn-mid" style="background:#efffef;color:var(--green);border:2px solid #c0f0cc" onclick="changeCount(${c.id},+1)">＋1</button>
       </div>
       <div class="counter-item-quick">
-        <button class="btn-quick" onclick="changeCounterVal(${c.id},-10)">－10</button>
-        <button class="btn-quick" onclick="changeCounterVal(${c.id},-5)">－5</button>
-        <button class="btn-quick" onclick="changeCounterVal(${c.id},+5)">＋5</button>
-        <button class="btn-quick" onclick="changeCounterVal(${c.id},+10)">＋10</button>
+        <button class="btn-custom-s" style="background:#fff0f2;border-color:#ffd0d6;color:var(--red)" onclick="changeCount(${c.id},-10)">－10</button>
+        <button class="btn-custom-s" style="background:#fff0f2;border-color:#ffd0d6;color:var(--red)" onclick="changeCount(${c.id},-5)">－5</button>
+        <button class="btn-custom-s" style="background:#efffef;border-color:#c0f0cc;color:var(--green)" onclick="changeCount(${c.id},+5)">＋5</button>
+        <button class="btn-custom-s" style="background:#efffef;border-color:#c0f0cc;color:var(--green)" onclick="changeCount(${c.id},+10)">＋10</button>
       </div>
       <div class="counter-item-custom">
-        <span style="font-size:11px;font-weight:900;color:var(--text2);white-space:nowrap">任意－</span>
-        <input class="counter-item-custom-input" type="number" id="custom-minus-${c.id}" value="3" min="1">
-        <button class="btn-custom-s" style="background:#fff0f2;border-color:#ffd0d6;color:var(--red)" onclick="doCustomChange(${c.id},-1)">－</button>
-        <span style="font-size:11px;font-weight:900;color:var(--text2);white-space:nowrap;margin-left:4px">任意＋</span>
-        <input class="counter-item-custom-input" type="number" id="custom-plus-${c.id}" value="3" min="1">
-        <button class="btn-custom-s" style="background:#efffef;border-color:#c0f0cc;color:var(--green)" onclick="doCustomChange(${c.id},+1)">＋</button>
+        <span style="font-size:11px;font-weight:900;color:var(--text2)">任意－</span>
+        <input class="counter-item-custom-input" type="number" id="ccustom-${c.id}" value="3" min="1">
+        <button class="btn-custom-s" style="background:#fff0f2;border-color:#ffd0d6;color:var(--red)" onclick="doCustomCount(${c.id},-1)">－</button>
+        <span style="font-size:11px;font-weight:900;color:var(--text2)">任意＋</span>
+        <button class="btn-custom-s" style="background:#efffef;border-color:#c0f0cc;color:var(--green)" onclick="doCustomCount(${c.id},+1)">＋</button>
       </div>
       <div class="counter-item-set">
-        <input class="counter-item-set-input" type="number" id="set-input-${c.id}" placeholder="初期値をセット" value="${c.initVal}">
+        <input class="counter-item-set-input" type="number" id="cset-${c.id}" placeholder="初期値" value="${c.initVal}">
         <button class="btn-set-s" onclick="setCounterVal(${c.id})">セット</button>
       </div>
     `;
@@ -808,37 +738,105 @@ function renderCounterList() {
   });
 }
 
-// ===== GACHA =====
-function updateGachaCount() {
-  const n = document.getElementById('gacha-input').value.split('\n').filter(l=>l.trim()).length;
-  document.getElementById('gacha-count').textContent = n + ' 件';
+// ===== ANY COUNTER =====
+function addAny(){
+  const id=++anyIdSeq;
+  const list=document.getElementById('any-list');
+  const card=document.createElement('div');
+  card.className='any-card';
+  card.id=`any-card-${id}`;
+  card.innerHTML=`<span class="any-label">任意－</span><input class="any-num-input" type="number" id="any-minus-${id}" value="3" min="1"><button class="any-op-btn any-minus" onclick="doAny(${id},-1)">－</button><span class="any-label">任意＋</span><input class="any-num-input" type="number" id="any-plus-${id}" value="3" min="1"><button class="any-op-btn any-plus" onclick="doAny(${id},+1)">＋</button><button class="any-del" onclick="document.getElementById('any-card-${id}').remove()">✕</button>`;
+  list.appendChild(card);
 }
-function doGacha() {
-  const lines = document.getElementById('gacha-input').value.split('\n').filter(l=>l.trim());
-  if (!lines.length) return;
-  const pick = lines[Math.floor(Math.random() * lines.length)];
-  const r = document.getElementById('gacha-result');
-  r.innerHTML = `<div class="gacha-result-label">✨ 今回の企画</div><div class="gacha-result-text">${pick}</div>`;
+function doAny(id,sign){
+  const inputId=sign<0?`any-minus-${id}`:`any-plus-${id}`;
+  const v=parseInt(document.getElementById(inputId).value)||1;
+  state.counters.forEach(c=>{c.value=Math.max(0,c.value+sign*v);updateCounterDisplay(c.id);});
+}
+
+// ===== GACHA =====
+function updateGachaCount(){
+  document.getElementById('gacha-count').textContent=document.getElementById('gacha-input').value.split('\n').filter(l=>l.trim()).length+' 件';
+}
+function doGacha(){
+  const lines=document.getElementById('gacha-input').value.split('\n').filter(l=>l.trim());
+  if(!lines.length)return;
+  const pick=lines[Math.floor(Math.random()*lines.length)];
+  document.getElementById('gacha-result').innerHTML=`<div class="gacha-result-label">✨ 今回の企画</div><div class="gacha-result-text">${pick}</div>`;
   state.gachaHistory.unshift(pick);
-  const card = document.getElementById('gacha-history-card');
-  const list = document.getElementById('history-list');
-  card.style.display = 'block';
-  list.innerHTML = state.gachaHistory.slice(0,20).map((h,i)=>
-    `<div class="hist-item"><span>${h}</span><span class="hist-num">#${state.gachaHistory.length-i}</span></div>`
-  ).join('');
+  const card=document.getElementById('gacha-history-card');
+  const list=document.getElementById('history-list');
+  card.style.display='block';
+  list.innerHTML=state.gachaHistory.slice(0,20).map((h,i)=>`<div class="hist-item"><span>${h}</span><span class="hist-num">#${state.gachaHistory.length-i}</span></div>`).join('');
+}
+
+// ===== TWEET =====
+function getRemainingItems(sec,data,total){
+  const remaining=[];
+  for(let i=0;i<total;i++){if(!state[sec].has(i))remaining.push(data[i]);}
+  return remaining;
+}
+function buildTweetText(hashtag){
+  const lines=[];
+  // 都道府県
+  const prefDone=state.pref.size,prefTotal=PREFS.length;
+  const prefRem=PREFS.filter((_,i)=>!state.pref.has(i));
+  lines.push(`🗾 47都道府県 ${prefDone}/${prefTotal}`);
+  if(prefRem.length>0&&prefRem.length<=5)lines.push(`残り：${prefRem.join(' ')}`);
+  // 星座
+  const starDone=state.star.size,starTotal=STARS.length;
+  const starRem=STARS.filter((_,i)=>!state.star.has(i)).map(s=>s.n);
+  lines.push(`⭐ 12星座 ${starDone}/${starTotal}`);
+  if(starRem.length>0&&starRem.length<=3)lines.push(`残り：${starRem.join(' ')}`);
+  // MBTI
+  const mbtiDone=state.mbti.size,mbtiTotal=MBTI_LIST.length;
+  const mbtiRem=MBTI_LIST.filter((_,i)=>!state.mbti.has(i)).map(m=>m.c);
+  lines.push(`🧠 MBTI ${mbtiDone}/${mbtiTotal}`);
+  if(mbtiRem.length>0&&mbtiRem.length<=4)lines.push(`残り：${mbtiRem.join(' ')}`);
+  // ギフト
+  const giftTotal=Object.values(GIFTS).reduce((s,g)=>s+g.items.length,0);
+  const giftDone=Object.values(state.gift).reduce((s,st)=>s+st.size,0);
+  lines.push(`🎁 全ギフト ${giftDone}/${giftTotal}`);
+  // 残りギフト（カテゴリ別に残り1〜2個なら表示）
+  Object.entries(GIFTS).forEach(([cat,data])=>{
+    const rem=data.items.filter((_,i)=>!state.gift[cat].has(i));
+    if(rem.length>0&&rem.length<=2)lines.push(`残り[${cat}]：${rem.join(' ')}`);
+  });
+  lines.push('');
+  lines.push(hashtag||'#IRIAM #IRIAMライバー');
+  return lines.join('\n');
+}
+function updateTweetPreview(){
+  const hashtag=document.getElementById('tweet-hashtag').value;
+  const text=buildTweetText(hashtag);
+  document.getElementById('tweet-preview').textContent=text;
+  const len=text.length;
+  const charEl=document.getElementById('tweet-char');
+  charEl.textContent=`${len} / 280`;
+  charEl.className='tweet-char'+(len>280?' over':'');
+}
+function openTweetModal(){
+  updateTweetPreview();
+  document.getElementById('tweet-modal').classList.add('open');
+}
+function closeTweetModal(){document.getElementById('tweet-modal').classList.remove('open')}
+function doTweet(){
+  const text=document.getElementById('tweet-preview').textContent;
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank');
+  closeTweetModal();
 }
 
 // ===== CELEBRATE =====
-function celebrate() {
-  const e = ['🎉','✨','🌟','💫','🎊','🌈','💖','🥳'];
-  for (let i=0;i<16;i++) {
+function celebrate(){
+  const e=['🎉','✨','🌟','💫','🎊','🌈','💖','🥳'];
+  for(let i=0;i<16;i++){
     setTimeout(()=>{
-      const el = document.createElement('div');
-      el.className = 'confetti';
-      el.textContent = e[Math.floor(Math.random()*e.length)];
-      el.style.left = Math.random()*100+'vw';
-      el.style.top = '-40px';
-      el.style.animationDuration = (1.2+Math.random()*0.8)+'s';
+      const el=document.createElement('div');
+      el.className='confetti';
+      el.textContent=e[Math.floor(Math.random()*e.length)];
+      el.style.left=Math.random()*100+'vw';
+      el.style.top='-40px';
+      el.style.animationDuration=(1.2+Math.random()*.8)+'s';
       document.body.appendChild(el);
       setTimeout(()=>el.remove(),2200);
     },i*60);
@@ -852,7 +850,7 @@ buildPref();
 buildStar();
 buildMBTI();
 rebuildGifts();
-addCounter('入室耐久', 100);
+addCounter('入室耐久',100);
 switchTab('pref');
 </script>
 </body>
