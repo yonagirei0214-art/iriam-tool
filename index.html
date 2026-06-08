@@ -204,14 +204,103 @@ header{background:var(--white);border-bottom:2px solid var(--border);box-shadow:
 .color-input{width:44px;height:44px;border:2px solid var(--border);border-radius:12px;cursor:pointer;padding:2px;background:none}
 .modal-close{width:100%;padding:12px;background:var(--ac);border:none;border-radius:14px;color:white;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer}
 
+/* ===== CONFIRM MODAL ===== */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;align-items:center;justify-content:center}
+.confirm-overlay.open{display:flex}
+.confirm-box{background:var(--white);border-radius:22px;padding:24px 20px 18px;width:82%;max-width:300px;box-shadow:0 8px 40px rgba(0,0,0,.22);text-align:center}
+.confirm-msg{font-size:15px;font-weight:900;margin-bottom:18px;line-height:1.5}
+.confirm-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.confirm-cancel{background:var(--bg);border:2px solid var(--border);border-radius:14px;color:var(--text2);font-family:inherit;font-size:14px;font-weight:900;padding:12px;cursor:pointer}
+.confirm-ok{background:var(--red);border:none;border-radius:14px;color:white;font-family:inherit;font-size:14px;font-weight:900;padding:12px;cursor:pointer}
+.confirm-ok:active{transform:scale(.96)}
+
 /* ===== MISC ===== */
 .confetti{position:fixed;pointer-events:none;z-index:9999;font-size:22px;animation:confettiFall linear forwards}
 @keyframes confettiFall{0%{transform:translateY(-30px) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(110vh) rotate(540deg) scale(.5);opacity:0}}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ===== TWEET CATEGORY CHECKS ===== */
+.tweet-cat-check{display:inline-flex;align-items:center;gap:4px;background:var(--bg);border:2px solid var(--border);border-radius:10px;padding:5px 9px;cursor:pointer;font-size:11px;font-weight:900;color:var(--text2);transition:all .14s;user-select:none}
+.tweet-cat-check.on{background:var(--ac-light);border-color:var(--ac);color:var(--ac-dark)}
+.tweet-cat-check .tcc{width:14px;height:14px;border-radius:4px;border:2px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;background:var(--white)}
+.tweet-cat-check.on .tcc{background:var(--ac);border-color:var(--ac);color:white}
+
+/* ===== GIFT TOGGLE ===== */
+.gift-toggle-btn{flex:1;padding:10px;border-radius:12px;border:none;background:transparent;color:var(--text2);font-family:inherit;font-size:12px;font-weight:900;cursor:pointer;transition:all .15s}
+.gift-toggle-btn.active{background:var(--ac);color:white;box-shadow:0 2px 8px rgba(78,205,230,.3)}
+
+/* ===== DURABILITY ===== */
+.dur-card{background:var(--white);border:2px solid var(--border);border-radius:20px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.dur-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.dur-title-input{flex:1;background:var(--bg);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;font-size:14px;font-weight:900;padding:8px 12px;outline:none;transition:border-color .16s}
+.dur-title-input:focus{border-color:var(--ac)}
+.dur-del-btn{background:#fff0f2;border:2px solid #ffd0d6;border-radius:12px;color:var(--red);font-family:inherit;font-size:13px;font-weight:900;padding:8px 11px;cursor:pointer;flex-shrink:0}
+.dur-del-btn:active{transform:scale(.92)}
+.dur-prog-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.dur-prog-text{font-size:12px;font-weight:900;color:var(--text2)}
+.dur-prog-text span{font-size:18px;color:var(--text);font-family:'Nunito',sans-serif}
+.dur-prog-text.done span{color:var(--green)}
+.dur-items{display:flex;flex-direction:column;gap:7px;margin:10px 0}
+.dur-item{display:flex;align-items:center;gap:8px;background:var(--bg);border:2px solid var(--border);border-radius:12px;padding:9px 10px;cursor:pointer;transition:all .14s;user-select:none}
+.dur-item:active{transform:scale(.97)}
+.dur-item.checked{background:var(--ac-light);border-color:var(--ac);opacity:.75}
+.dur-item .cb{width:20px;height:20px;border-radius:6px;border:2.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .14s;background:var(--white)}
+.dur-item.checked .cb{background:var(--ac);border-color:var(--ac);color:white}
+.dur-item-label{flex:1;font-size:13px;font-weight:900;line-height:1.3}
+.dur-item.checked .dur-item-label{text-decoration:line-through;color:var(--text2)}
+.dur-item-del{background:transparent;border:none;color:var(--text2);font-size:15px;cursor:pointer;padding:2px 5px;flex-shrink:0;opacity:.6}
+.dur-add-row{display:flex;gap:8px;margin-top:6px}
+.dur-add-input{flex:1;background:var(--bg);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;font-size:13px;font-weight:700;padding:9px 12px;outline:none;transition:border-color .16s}
+.dur-add-input:focus{border-color:var(--ac)}
+.dur-add-btn{background:var(--ac);border:none;border-radius:12px;color:white;font-family:inherit;font-size:13px;font-weight:900;padding:9px 14px;cursor:pointer;white-space:nowrap}
+.dur-add-btn:active{transform:scale(.93)}
+.dur-reset-btn{background:var(--ac-light);border:2px solid var(--border);color:var(--ac-dark);padding:6px 10px;border-radius:10px;font-size:11px;font-weight:900;cursor:pointer;font-family:inherit}
+.dur-reset-btn:active{transform:scale(.93)}
+
+/* ===== ROULETTE ===== */
+.roulette-item-row{display:flex;align-items:center;gap:8px}
+.roulette-item-input{flex:1;background:var(--bg);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;font-size:14px;font-weight:700;padding:9px 12px;outline:none;transition:border-color .16s}
+.roulette-item-input:focus{border-color:var(--ac)}
+.roulette-item-del{background:#fff0f2;border:2px solid #ffd0d6;border-radius:10px;color:var(--red);font-family:inherit;font-size:13px;font-weight:900;padding:7px 11px;cursor:pointer;flex-shrink:0}
+.roulette-item-del:active{transform:scale(.92)}
+
+
+.dark-rarity-block{background:var(--bg);border:2px solid var(--border);border-radius:14px;padding:12px;margin-bottom:10px}
+.dark-rarity-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.dark-rarity-badge{font-family:'Nunito',sans-serif;font-weight:900;font-size:13px;padding:4px 12px;border-radius:20px;color:white}
+.dark-rate-input{width:68px;background:var(--white);border:2px solid var(--border);border-radius:10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;padding:6px 8px;text-align:center;outline:none;transition:border-color .15s}
+.dark-rate-input:focus{border-color:var(--ac)}
+.dark-rate-label{font-size:12px;font-weight:900;color:var(--text2)}
+.dark-items-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.dark-item-wrap{display:flex;align-items:center;gap:4px}
+.dark-item-input{width:90px;background:var(--white);border:2px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:6px 8px;outline:none;transition:border-color .15s}
+.dark-item-input:focus{border-color:var(--ac)}
+.dark-item-del{background:transparent;border:none;color:var(--text2);font-size:14px;cursor:pointer;padding:2px 4px;flex-shrink:0}
+.dark-add-item-btn{background:var(--ac-light);border:2px solid var(--border);color:var(--ac-dark);font-family:inherit;font-size:11px;font-weight:900;padding:6px 10px;border-radius:10px;cursor:pointer;white-space:nowrap}
+.dark-result-card{background:var(--white);border:2px solid var(--border);border-radius:14px;padding:9px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;box-shadow:var(--shadow)}
+.dark-result-rarity{font-family:'Nunito',sans-serif;font-weight:900;font-size:11px;padding:2px 8px;border-radius:10px;color:white;margin-bottom:2px}
+.dark-result-name{font-size:12px;font-weight:900;line-height:1.2;word-break:break-all}
+.dark-result-count{font-family:'Nunito',sans-serif;font-weight:900;font-size:11px;color:var(--ac-dark);background:var(--ac-light);border-radius:8px;padding:1px 7px}
+.dark-tweet-btn{background:linear-gradient(135deg,#1da1f2,#0d8fd6);border:none;border-radius:10px;color:white;font-family:inherit;font-size:11px;font-weight:900;padding:5px 10px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.dark-tweet-btn:active{transform:scale(.93)}
+.dark-hist-meta{display:flex;justify-content:space-between;margin-bottom:5px;font-size:10px;color:var(--text2);font-weight:900}
+.dark-hist-tags{display:flex;flex-wrap:wrap;gap:4px}
+.dark-hist-tag{font-size:11px;font-weight:900;padding:2px 8px;border-radius:8px;color:white}
 </style>
 </head>
 <body>
+
+<!-- CONFIRM MODAL -->
+<div class="confirm-overlay" id="confirm-modal">
+  <div class="confirm-box">
+    <div class="confirm-msg" id="confirm-msg">リセットしますか？</div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeConfirm()">キャンセル</button>
+      <button class="confirm-ok" id="confirm-ok-btn" onclick="doConfirmOk()">リセット</button>
+    </div>
+  </div>
+</div>
 
 <!-- COLOR MODAL -->
 <div class="modal-overlay" id="color-modal">
@@ -231,6 +320,7 @@ header{background:var(--white);border-bottom:2px solid var(--border);box-shadow:
 <div class="tweet-modal-overlay" id="tweet-modal">
   <div class="tweet-modal">
     <div class="tweet-modal-title">🐦 進捗をツイート</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px" id="tweet-cat-checks"></div>
     <div class="tweet-preview" id="tweet-preview"></div>
     <div class="tweet-char" id="tweet-char">0 / 280</div>
     <input class="tweet-hashtag" type="text" id="tweet-hashtag" placeholder="#IRIAM #IRIAMライバー" value="#IRIAM #IRIAMライバー" oninput="updateTweetPreview()">
@@ -247,7 +337,6 @@ header{background:var(--white);border-bottom:2px solid var(--border);box-shadow:
     <div class="header-right">
       <button class="tweet-btn" onclick="openTweetModal()">🐦 ツイート</button>
       <button class="color-btn" onclick="openColorModal()">🎨 カラー</button>
-      <button class="reset-all-btn" onclick="resetAll()">🗑 全リセット</button>
     </div>
   </div>
   <div class="tabs" id="tabs"></div>
@@ -312,6 +401,10 @@ header{background:var(--white);border-bottom:2px solid var(--border);box-shadow:
 
     <!-- ギフト -->
     <div class="page" id="page-gift">
+      <div style="display:flex;gap:6px;margin-bottom:12px;background:var(--white);border:2px solid var(--border);border-radius:16px;padding:5px;box-shadow:var(--shadow)">
+        <button id="toggle-full" class="gift-toggle-btn active" onclick="switchGiftMode('full')">🎁 全ギフト耐久</button>
+        <button id="toggle-petit" class="gift-toggle-btn" onclick="switchGiftMode('petit')">💎 プチギフト耐久</button>
+      </div>
       <div id="gift-content"></div>
     </div>
 
@@ -324,6 +417,12 @@ header{background:var(--white);border-bottom:2px solid var(--border);box-shadow:
         <button class="add-counter-btn" style="width:auto;padding:8px 16px;font-size:13px" onclick="addAny()">＋ 追加</button>
       </div>
       <div id="any-list"></div>
+    </div>
+
+    <!-- カスタム耐久 -->
+    <div class="page" id="page-durability">
+      <div id="durability-list"></div>
+      <button class="add-counter-btn" style="margin-bottom:20px" onclick="addDurability()">＋ 耐久を追加</button>
     </div>
 
     <!-- 企画ガチャ -->
@@ -343,9 +442,101 @@ header{background:var(--white);border-bottom:2px solid var(--border);box-shadow:
           </div>
         </div>
         <div class="card" id="gacha-history-card" style="display:none">
-          <div class="card-label">📋 履歴</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+            <div class="card-label" style="margin-bottom:0">📋 履歴</div>
+            <button class="reset-btn" onclick="clearGachaHistory()">履歴クリア</button>
+          </div>
           <div id="history-list"></div>
         </div>
+      </div>
+    </div>
+
+    <!-- 闇ガチャ -->
+    <div class="page" id="page-dark">
+      <div class="gacha-wrap">
+
+        <!-- レアリティ設定 -->
+        <div class="card">
+          <div class="card-label">⚙️ レアリティ設定（確率・アイテム）</div>
+          <div id="dark-rarity-settings"></div>
+          <div style="margin-top:10px;font-size:11px;font-weight:900;color:var(--text2)" id="dark-rate-warn"></div>
+        </div>
+
+        <!-- リスナー名入力 -->
+        <div class="card" style="padding:12px 14px">
+          <div class="card-label">👤 リスナー名</div>
+          <input type="text" id="dark-listener-name" placeholder="例：○○さん" style="width:100%;background:var(--bg);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;font-size:15px;font-weight:900;padding:11px 13px;outline:none;transition:border-color .16s" onfocus="this.style.borderColor='var(--ac)'" onblur="this.style.borderColor='var(--border)'">
+          <div class="card-label" style="margin-top:10px">🔗 返信先ツイートURL（空欄なら通常ツイート）</div>
+          <input type="text" id="dark-reply-url" placeholder="https://x.com/user/status/123..." style="width:100%;background:var(--bg);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;font-size:13px;font-weight:700;padding:11px 13px;outline:none;transition:border-color .16s" onfocus="this.style.borderColor='var(--ac)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+
+        <!-- 回数ボタン -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="gacha-btn" style="padding:14px;font-size:15px" onclick="doDarkGacha(1)">🌑 1回引く</button>
+          <button class="gacha-btn" style="padding:14px;font-size:15px" onclick="doDarkGacha(10)">🌑 10連</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="number" id="dark-custom-num" value="32" min="1" max="5000" style="flex:1;background:var(--bg);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;padding:12px;text-align:center;outline:none">
+          <button class="gacha-btn" style="flex:2;padding:14px;font-size:15px" onclick="doDarkGachaCustom()">🌑 任意回数</button>
+        </div>
+
+        <!-- 結果表示 -->
+        <div class="card" id="dark-result-card" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div class="card-label" style="margin-bottom:0">✨ 結果</div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div id="dark-result-summary" style="font-size:11px;font-weight:900;color:var(--text2)"></div>
+              <button class="dark-tweet-btn" id="dark-result-tweet-btn" onclick="tweetDarkResult(-1)">🐦 ツイート</button>
+            </div>
+          </div>
+          <div id="dark-result-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:7px"></div>
+        </div>
+
+        <!-- 履歴 -->
+        <div class="card" id="dark-history-card" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+            <div class="card-label" style="margin-bottom:0">📋 ガチャ履歴</div>
+            <button class="reset-btn" onclick="clearDarkHistory()">履歴クリア</button>
+          </div>
+          <div id="dark-history-list"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ルーレット -->
+    <div class="page" id="page-roulette">
+      <div class="gacha-wrap">
+
+        <!-- 項目設定 -->
+        <div class="card">
+          <div class="card-label">📝 項目設定</div>
+          <div id="roulette-items-wrap" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px"></div>
+          <div style="display:flex;gap:8px">
+            <button class="add-counter-btn" style="margin-bottom:0;flex:1" onclick="addRouletteItem()">＋ 項目を追加</button>
+            <button class="reset-btn" onclick="resetRouletteItems()">リセット</button>
+          </div>
+        </div>
+
+        <!-- キャンバス -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+          <div style="position:relative;display:inline-block">
+            <canvas id="roulette-canvas" width="300" height="300" style="border-radius:50%;display:block;max-width:calc(100vw - 80px);height:auto"></canvas>
+            <!-- 矢印 -->
+            <div style="position:absolute;top:50%;right:-22px;transform:translateY(-50%);font-size:26px;line-height:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,.3))">▶</div>
+          </div>
+          <button class="gacha-btn" id="roulette-spin-btn" style="width:100%;padding:16px;font-size:17px" onclick="spinRoulette()">🎡 スピン！</button>
+        </div>
+
+        <!-- 結果 -->
+        <div class="card" id="roulette-result-card" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div class="card-label" style="margin-bottom:0">🎉 結果</div>
+            <button class="dark-tweet-btn" onclick="tweetRouletteResult()">🐦 ツイート</button>
+          </div>
+          <div id="roulette-result-text" style="font-size:26px;font-weight:900;text-align:center;padding:14px 0;color:var(--ac)"></div>
+        </div>
+
       </div>
     </div>
 
@@ -383,12 +574,68 @@ const GIFTS={
   'LOVE':{color:'#ff5c6a',bg:'#fff0f2',items:['好物','ハート','かわいい','照れ','キャーッ！','あざとい','かわぼ','呼んだ？','ハート(大)','すこっていい？','嫁に来ないか…？','ズキューン！','唐突な愛','ウインクタイム','すこ','かわいい！3000Pt','尊い','なでなで','大好き','あふれる想い']},
 };
 
+
+// ===== PETIT GIFTS DATA =====
+const PETIT_GIFTS={
+  '1pt':{color:'#ff6eb4',bg:'#fff0f8',items:['うんうん','なるほど','わかる','わからん','爆笑','号泣','考え中','好物']},
+  '5pt':{color:'#5b9fff',bg:'#f0f6ff',items:[
+    'はろー！','ようこそ','おつかれさま','おはよう','こんばんは','バイバイ','キリおめ','ナイギフ',
+    'ナイス','ふ〜ん','・・・','？','！？','もういっかい！','ハート','ありがとう！',
+    'かわいい','やだ','ダウト','www','草','ざわざわ','神','キャンディ',
+    'サァーー','ナムナム','ヒエッ','ばぁ。','ちょっと','むっちゃ','もっと','完全燃焼',
+    '激熱','まぶしい','エナジードリンク','世界一','祭うちわ','えぐぐ','すごい','すばら',
+    'たのしみ','ええやん','天才か！？','最強','照れ','かしこ','はなまる','スリスリ',
+    '拍手','エモい','サイリウム虹','チルい','厨二病','アフロしらす','アンコール','ヘドバン',
+    '炎','100点','握手','ハイ！','助かる','クラッカー','良さそう','クローバー',
+    'ドリンク','ぴえん','バラ','おかえり','おやすみ','サイリウムオレンジ','サイリウムピンク','サイリウム白',
+    'サイリウム紫','サイリウム緑','サイリウム赤','サイリウム青','サイリウム黄色','サイリウム黄緑','サイリウム黒','いってきます',
+    'いってらっしゃい','いらっしゃい','おじゃまします','非常口','ただいま','やってる？','らっしゃっせぃ！','初見さんヤッホー',
+    '尊','ふぅー！！','キャーッ！','おいしいやつ！','おかわり','満腹','空腹','ビタミン不足',
+    'ごっつぁんです','じゅるり','そんなバナナ','メシウマ','かっこいい','イケボ','オサレ','クール',
+    'アニキ〜！','仰せのままに','漢','鉄アレイ','いえーい！(ホシーカ)','うむうむ(ふくちゃ)','きゅるん(ユラミィ)','ごろごろ(ねこころ)',
+    'ぺこぺこ(つむまる)','ヤッホー(さばぱん)','あわわ','しおしお','ぽかぽか','やばーい','ウケる','ヒャッホー！',
+    '遅れた!!','いつもので','かー','つー','一体感','乗りなッ！','降りろー','しーっ',
+    'はてー？','やれやれ','ドッ','ごはん','すぐ戻る！','トイレ','フロリダ','しごもど',
+    'ちょい落ち','サラダバー','スッ','かぷかぷ','こらえ笑い','ブフォッ','微笑','真顔',
+    '草(植物)','えへへ','おもしろー','ガハハ','ズコー','座布団','うぐぅ...','ガクブル',
+    'ビクッ!?','ファイティン','???','あざとい','おもしれーやつ','沼','かわば','癒し〜',
+    '耳が幸せ','鳥肌注意','はぁい...','ふんふん...','すやぁ...','おねが〜い','ばぁぁ','ぷんぷん',
+    'ふぉっふぉっ','やりおる','よかろう','あとは頼んだ','おねぎします。','まかセロリ','ドヤッ','呼んだ？',
+    'メンタルブレイク','いっくよー！','ばぁ','ばぁぁぁ','ヒソヒソ','ポカーン','閃き','のど飴',
+    '休んで！','寝て！','食べて！','充電中','残量100%','残量1%','ふひひ...','グー',
+    'チョキ','パー','ドラムロール','ご乱心','コッ☆','プチ模卓','ダジャレ警察','逆にね',
+    'ほこり','もやし','キタコレ','ンジャメナ',
+    'Thank youさばぱん','Thank youしらす','Thank youつむまる','Thank youねこころ',
+    'Thank youふくちゃ','Thank youホシーカ','Thank youユラミィ','またまたぁ',
+    'んなアホな','ニヤリ','話聞こか？'
+  ]},
+  '10pt':{color:'#3dcc7a',bg:'#f0fff6',items:[
+    'シャキーン！','キラキラ','アチッ','...つむっ！',
+    'チャージっ！','ひんやりタイム','...どれ？','はらだいこ',
+    'ぴたんぴたん','わいわい','ノリノリ','からの〜？',
+    'へぇ','黒歴史','フラグ','画伯降臨',
+    '精神降臨','ほんまや','平成','昭和',
+    '江戸','おかん','ふりふり'
+  ]},
+};
+
 // ===== STATE =====
 const state={
   pref:new Set(), star:new Set(), mbti:new Set(),
   gift:Object.fromEntries(Object.keys(GIFTS).map(k=>[k,new Set()])),
+  petitGift:Object.fromEntries(Object.keys(PETIT_GIFTS).map(k=>[k,new Set()])),
+  giftMode:'full',
   counters:[], gachaHistory:[],
+  darkItems:{N:[],R:[],SR:[],SSR:[],UR:[]},
+  darkRates:{N:70,R:20,SR:7,SSR:2,UR:1},
+  darkHistory:[],
+  durability:[],
 };
+
+// ===== SANITIZE (XSS対策) =====
+function esc(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
 
 // ===== COLOR =====
 const PRESETS=['#4ecde6','#ff6eb4','#a06aff','#3dcc7a','#ff8c42','#ffca3a','#ff5c6a','#5b9fff','#e060c0','#00b894'];
@@ -437,7 +684,10 @@ const TABS=[
   {id:'mbti',label:'MBTI',icon:'🧠'},
   {id:'gift',label:'ギフト',icon:'🎁'},
   {id:'counter',label:'カウンター',icon:'🚪'},
+  {id:'durability',label:'耐久',icon:'📋'},
   {id:'gacha',label:'企画ガチャ',icon:'🎲'},
+  {id:'dark',label:'闇ガチャ',icon:'🌑'},
+  {id:'roulette',label:'ルーレット',icon:'🎡'},
 ];
 function initTabs(){
   const tc=document.getElementById('tabs');
@@ -499,29 +749,26 @@ function updateGiftAll(){
   if(count===total&&total>0)celebrate();
 }
 
+// ===== CONFIRM MODAL =====
+let _confirmCallback=null;
+function showConfirm(msg,cb){
+  document.getElementById('confirm-msg').textContent=msg;
+  _confirmCallback=cb;
+  document.getElementById('confirm-modal').classList.add('open');
+}
+function closeConfirm(){
+  document.getElementById('confirm-modal').classList.remove('open');
+  _confirmCallback=null;
+}
+function doConfirmOk(){
+  const cb=_confirmCallback;
+  closeConfirm();
+  if(cb)cb();
+}
+
 // ===== RESET =====
 function resetSection(sec){
-  state[sec].clear();
-  const gridId={pref:'grid-pref',star:'grid-star',mbti:'grid-mbti'}[sec];
-  const total={pref:PREFS.length,star:STARS.length,mbti:MBTI_LIST.length}[sec];
-  const grid=document.getElementById(gridId);
-  if(grid)grid.querySelectorAll('.check-item,.mbti-item').forEach(el=>{
-    el.classList.remove('checked');
-    const cb=el.querySelector('.cb');
-    if(cb){cb.textContent='';cb.style.cssText='';}
-  });
-  updateProg(sec,total);
-}
-function resetGiftCat(cat){
-  state.gift[cat].clear();
-  rebuildGifts();
-}
-function resetGiftAll(){
-  Object.keys(state.gift).forEach(k=>state.gift[k].clear());
-  rebuildGifts();
-}
-function resetAll(){
-  ['pref','star','mbti'].forEach(sec=>{
+  showConfirm('リセットしますか？',()=>{
     state[sec].clear();
     const gridId={pref:'grid-pref',star:'grid-star',mbti:'grid-mbti'}[sec];
     const total={pref:PREFS.length,star:STARS.length,mbti:MBTI_LIST.length}[sec];
@@ -530,12 +777,30 @@ function resetAll(){
       el.classList.remove('checked');
       const cb=el.querySelector('.cb');
       if(cb){cb.textContent='';cb.style.cssText='';}
+      el.style.borderColor='';el.style.background='';
     });
     updateProg(sec,total);
   });
-  Object.keys(state.gift).forEach(k=>state.gift[k].clear());
-  rebuildGifts();
-  state.counters.forEach(c=>{c.value=c.initVal;updateCounterDisplay(c.id);});
+}
+function resetGiftCat(cat){
+  showConfirm(`「${cat}」をリセットしますか？`,()=>{
+    state.gift[cat].clear();
+    rebuildGifts();
+  });
+}
+function resetGiftAll(){
+  showConfirm('全ギフトをリセットしますか？',()=>{
+    Object.keys(state.gift).forEach(k=>state.gift[k].clear());
+    rebuildGifts();
+  });
+}
+function resetCounterVal(id){
+  showConfirm('カウンターをリセットしますか？',()=>{
+    const c=state.counters.find(c=>c.id===id);
+    if(!c)return;
+    c.value=c.initVal;
+    updateCounterDisplay(id);
+  });
 }
 
 // ===== BUILD PREF =====
@@ -693,12 +958,6 @@ function setCounterVal(id){
   c.value=v;c.initVal=v;
   updateCounterDisplay(id);
 }
-function resetCounterVal(id){
-  const c=state.counters.find(c=>c.id===id);
-  if(!c)return;
-  c.value=c.initVal;
-  updateCounterDisplay(id);
-}
 function renderCounterList(){
   const list=document.getElementById('counter-list');
   list.innerHTML='';
@@ -707,7 +966,7 @@ function renderCounterList(){
     card.className='counter-item-card';
     card.innerHTML=`
       <div class="counter-item-top">
-        <input class="counter-item-name" type="text" value="${c.name}" oninput="state.counters.find(x=>x.id===${c.id}).name=this.value">
+        <input class="counter-item-name" type="text" value="${esc(c.name)}" oninput="state.counters.find(x=>x.id===${c.id}).name=this.value">
         <button class="counter-item-del" onclick="removeCounter(${c.id})">✕</button>
         <button class="reset-btn" onclick="resetCounterVal(${c.id})">リセット</button>
       </div>
@@ -762,12 +1021,21 @@ function doGacha(){
   const lines=document.getElementById('gacha-input').value.split('\n').filter(l=>l.trim());
   if(!lines.length)return;
   const pick=lines[Math.floor(Math.random()*lines.length)];
-  document.getElementById('gacha-result').innerHTML=`<div class="gacha-result-label">✨ 今回の企画</div><div class="gacha-result-text">${pick}</div>`;
+  document.getElementById('gacha-result').innerHTML=`<div class="gacha-result-label">✨ 今回の企画</div><div class="gacha-result-text">${esc(pick)}</div>`;
   state.gachaHistory.unshift(pick);
   const card=document.getElementById('gacha-history-card');
   const list=document.getElementById('history-list');
   card.style.display='block';
-  list.innerHTML=state.gachaHistory.slice(0,20).map((h,i)=>`<div class="hist-item"><span>${h}</span><span class="hist-num">#${state.gachaHistory.length-i}</span></div>`).join('');
+  list.innerHTML=state.gachaHistory.slice(0,20).map((h,i)=>`<div class="hist-item"><span>${esc(h)}</span><span class="hist-num">#${state.gachaHistory.length-i}</span></div>`).join('');
+}
+
+// ===== GACHA HISTORY CLEAR =====
+function clearGachaHistory(){
+  showConfirm('ガチャ履歴をクリアしますか？',()=>{
+    state.gachaHistory=[];
+    document.getElementById('gacha-history-card').style.display='none';
+    document.getElementById('history-list').innerHTML='';
+  });
 }
 
 // ===== TWEET =====
@@ -776,33 +1044,85 @@ function getRemainingItems(sec,data,total){
   for(let i=0;i<total;i++){if(!state[sec].has(i))remaining.push(data[i]);}
   return remaining;
 }
+// ツイートカテゴリ定義
+const TWEET_CATS=[
+  {id:'pref',label:'🗾 都道府県'},
+  {id:'star',label:'⭐ 星座'},
+  {id:'mbti',label:'🧠 MBTI'},
+  {id:'gift',label:'🎁 ギフト'},
+  {id:'counter',label:'🚪 カウンター'},
+];
+// 選択状態（デフォルト全ON）
+const tweetCatState={pref:true,star:true,mbti:true,gift:true,counter:true};
+
+function buildTweetCatChecks(){
+  const wrap=document.getElementById('tweet-cat-checks');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  TWEET_CATS.forEach(cat=>{
+    const el=document.createElement('div');
+    el.className='tweet-cat-check'+(tweetCatState[cat.id]?' on':'');
+    el.innerHTML=`<span class="tcc">${tweetCatState[cat.id]?'✓':''}</span>${cat.label}`;
+    el.onclick=()=>{
+      tweetCatState[cat.id]=!tweetCatState[cat.id];
+      el.classList.toggle('on',tweetCatState[cat.id]);
+      el.querySelector('.tcc').textContent=tweetCatState[cat.id]?'✓':'';
+      updateTweetPreview();
+    };
+    wrap.appendChild(el);
+  });
+}
+
 function buildTweetText(hashtag){
   const lines=[];
   // 都道府県
-  const prefDone=state.pref.size,prefTotal=PREFS.length;
-  const prefRem=PREFS.filter((_,i)=>!state.pref.has(i));
-  lines.push(`🗾 47都道府県 ${prefDone}/${prefTotal}`);
-  if(prefRem.length>0&&prefRem.length<=5)lines.push(`残り：${prefRem.join(' ')}`);
+  if(tweetCatState.pref){
+    const prefDone=state.pref.size,prefTotal=PREFS.length;
+    const prefRem=PREFS.filter((_,i)=>!state.pref.has(i));
+    lines.push(`🗾 47都道府県 ${prefDone}/${prefTotal}`);
+    if(prefRem.length>0&&prefRem.length<=5)lines.push(`残り：${prefRem.join(' ')}`);
+  }
   // 星座
-  const starDone=state.star.size,starTotal=STARS.length;
-  const starRem=STARS.filter((_,i)=>!state.star.has(i)).map(s=>s.n);
-  lines.push(`⭐ 12星座 ${starDone}/${starTotal}`);
-  if(starRem.length>0&&starRem.length<=3)lines.push(`残り：${starRem.join(' ')}`);
+  if(tweetCatState.star){
+    const starDone=state.star.size,starTotal=STARS.length;
+    const starRem=STARS.filter((_,i)=>!state.star.has(i)).map(s=>s.n);
+    lines.push(`⭐ 12星座 ${starDone}/${starTotal}`);
+    if(starRem.length>0&&starRem.length<=3)lines.push(`残り：${starRem.join(' ')}`);
+  }
   // MBTI
-  const mbtiDone=state.mbti.size,mbtiTotal=MBTI_LIST.length;
-  const mbtiRem=MBTI_LIST.filter((_,i)=>!state.mbti.has(i)).map(m=>m.c);
-  lines.push(`🧠 MBTI ${mbtiDone}/${mbtiTotal}`);
-  if(mbtiRem.length>0&&mbtiRem.length<=4)lines.push(`残り：${mbtiRem.join(' ')}`);
-  // ギフト
-  const giftTotal=Object.values(GIFTS).reduce((s,g)=>s+g.items.length,0);
-  const giftDone=Object.values(state.gift).reduce((s,st)=>s+st.size,0);
-  lines.push(`🎁 全ギフト ${giftDone}/${giftTotal}`);
-  // 残りギフト（カテゴリ別に残り1〜2個なら表示）
-  Object.entries(GIFTS).forEach(([cat,data])=>{
-    const rem=data.items.filter((_,i)=>!state.gift[cat].has(i));
-    if(rem.length>0&&rem.length<=2)lines.push(`残り[${cat}]：${rem.join(' ')}`);
-  });
-  lines.push('');
+  if(tweetCatState.mbti){
+    const mbtiDone=state.mbti.size,mbtiTotal=MBTI_LIST.length;
+    const mbtiRem=MBTI_LIST.filter((_,i)=>!state.mbti.has(i)).map(m=>m.c);
+    lines.push(`🧠 MBTI ${mbtiDone}/${mbtiTotal}`);
+    if(mbtiRem.length>0&&mbtiRem.length<=4)lines.push(`残り：${mbtiRem.join(' ')}`);
+  }
+  // ギフト（モードに応じて切り替え）
+  if(tweetCatState.gift){
+    if(state.giftMode==='full'){
+      const giftTotal=Object.values(GIFTS).reduce((s,g)=>s+g.items.length,0);
+      const giftDone=Object.values(state.gift).reduce((s,st)=>s+st.size,0);
+      lines.push(`🎁 全ギフト耐久 ${giftDone}/${giftTotal}`);
+      Object.entries(GIFTS).forEach(([cat,data])=>{
+        const rem=data.items.filter((_,i)=>!state.gift[cat].has(i));
+        if(rem.length>0&&rem.length<=2)lines.push(`残り[${cat}]：${rem.join(' ')}`);
+      });
+    } else {
+      const pgTotal=Object.values(PETIT_GIFTS).reduce((s,g)=>s+g.items.length,0);
+      const pgDone=Object.values(state.petitGift).reduce((s,st)=>s+st.size,0);
+      lines.push(`💎 プチギフト耐久 ${pgDone}/${pgTotal}`);
+      Object.entries(PETIT_GIFTS).forEach(([cat,data])=>{
+        const rem=data.items.filter((_,i)=>!state.petitGift[cat].has(i));
+        if(rem.length>0&&rem.length<=2)lines.push(`残り[${cat}]：${rem.join(' ')}`);
+      });
+    }
+  }
+  // カウンター
+  if(tweetCatState.counter&&state.counters.length>0){
+    state.counters.forEach(c=>{
+      lines.push(`🚪 ${c.name} ${c.value}`);
+    });
+  }
+  if(lines.length>0)lines.push('');
   lines.push(hashtag||'#IRIAM #IRIAMライバー');
   return lines.join('\n');
 }
@@ -816,6 +1136,7 @@ function updateTweetPreview(){
   charEl.className='tweet-char'+(len>280?' over':'');
 }
 function openTweetModal(){
+  buildTweetCatChecks();
   updateTweetPreview();
   document.getElementById('tweet-modal').classList.add('open');
 }
@@ -843,7 +1164,448 @@ function celebrate(){
   }
 }
 
-// ===== INIT =====
+// ===== GIFT MODE TOGGLE =====
+function switchGiftMode(mode){
+  state.giftMode=mode;
+  document.getElementById('toggle-full').classList.toggle('active',mode==='full');
+  document.getElementById('toggle-petit').classList.toggle('active',mode==='petit');
+  if(mode==='full') rebuildGifts();
+  else rebuildPetitGifts();
+}
+
+// ===== PETIT GIFT BUILD =====
+function rebuildPetitGifts(){
+  const c=document.getElementById('gift-content');
+  const total=Object.values(PETIT_GIFTS).reduce((s,g)=>s+g.items.length,0);
+  c.innerHTML=`<div class="page-head" style="margin-bottom:12px"><div class="page-head-top"><div class="page-title">💎 プチギフト耐久</div><button class="reset-btn" onclick="resetPetitAll()">全リセット</button></div><div class="prog-row"><div class="prog-text" id="prog-text-petit-all"><span>0</span> / ${total}</div><div id="done-petit-all"></div></div><div class="prog-bar-wrap"><div class="prog-bar" id="bar-petit-all" style="width:0%"></div></div></div>`;
+  Object.entries(PETIT_GIFTS).forEach(([cat,data])=>{
+    const card=document.createElement('div');
+    card.className='gift-cat-card';
+    card.innerHTML=`<div class="gift-cat-head"><div style="display:flex;align-items:center;gap:8px"><span class="cat-pill" style="background:${data.bg};color:${data.color};border:2px solid ${data.color}44">${cat}</span><span class="cat-count" id="petit-cat-count-${cat}">0 / ${data.items.length}</span></div><button class="reset-btn" onclick="resetPetitCat('${cat}')">リセット</button></div><div class="prog-bar-wrap" style="margin-bottom:9px"><div class="prog-bar" id="bar-petit-${cat}" style="background:${data.color};width:0%"></div></div>`;
+    const grid=document.createElement('div');
+    grid.className='gift-grid-inner';
+    data.items.forEach((item,i)=>{
+      const el=document.createElement('div');
+      const chk=state.petitGift[cat].has(i);
+      el.className='check-item'+(chk?' checked':'');
+      if(chk){el.style.borderColor=data.color;el.style.background=data.bg;}
+      el.innerHTML=`<div class="cb" style="${chk?`background:${data.color};border-color:${data.color};color:white`:''}">${chk?'✓':''}</div><div class="cl">${item}</div>`;
+      el.onclick=()=>{
+        const on=state.petitGift[cat].has(i);
+        const cb=el.querySelector('.cb');
+        if(on){state.petitGift[cat].delete(i);el.classList.remove('checked');el.style.borderColor='';el.style.background='';cb.style.cssText='';cb.textContent='';}
+        else{state.petitGift[cat].add(i);el.classList.add('checked');el.style.borderColor=data.color;el.style.background=data.bg;cb.style.cssText=`background:${data.color};border-color:${data.color};color:white`;cb.textContent='✓';}
+        updatePetitCat(cat);updatePetitAll();
+      };
+      grid.appendChild(el);
+    });
+    card.appendChild(grid);
+    c.appendChild(card);
+    updatePetitCat(cat);
+  });
+  updatePetitAll();
+}
+function updatePetitCat(cat){
+  const count=state.petitGift[cat].size,total=PETIT_GIFTS[cat].items.length;
+  const el=document.getElementById('petit-cat-count-'+cat);
+  const bar=document.getElementById('bar-petit-'+cat);
+  if(el){el.textContent=`${count} / ${total}`;el.className='cat-count'+(count===total?' done':'');}
+  if(bar)bar.style.width=(count/total*100)+'%';
+}
+function updatePetitAll(){
+  const total=Object.values(PETIT_GIFTS).reduce((s,g)=>s+g.items.length,0);
+  const count=Object.values(state.petitGift).reduce((s,st)=>s+st.size,0);
+  const bar=document.getElementById('bar-petit-all');
+  const pt=document.getElementById('prog-text-petit-all');
+  const dn=document.getElementById('done-petit-all');
+  if(bar)bar.style.width=(count/total*100)+'%';
+  if(pt){pt.innerHTML=`<span>${count}</span> / ${total}`;pt.className='prog-text'+(count===total?' done':'');}
+  if(dn)dn.innerHTML=(count===total&&total>0)?'<span class="done-badge">🎉 コンプリート！</span>':'';
+  if(count===total&&total>0)celebrate();
+}
+function resetPetitCat(cat){
+  showConfirm(`「${cat}」をリセットしますか？`,()=>{
+    state.petitGift[cat].clear();
+    rebuildPetitGifts();
+  });
+}
+function resetPetitAll(){
+  showConfirm('全プチギフトをリセットしますか？',()=>{
+    Object.keys(state.petitGift).forEach(k=>state.petitGift[k].clear());
+    rebuildPetitGifts();
+  });
+}
+
+// ===== DARK GACHA =====
+const DARK_RARITY_COLORS={N:'#7a8fa6',R:'#3dcc7a',SR:'#5b9fff',SSR:'#ff8c42',UR:'#ff5c6a'};
+const DARK_RARITY_ORDER=['N','R','SR','SSR','UR'];
+function buildDarkSettings(){
+  const wrap=document.getElementById('dark-rarity-settings');
+  wrap.innerHTML='';
+  DARK_RARITY_ORDER.forEach(rar=>{
+    const block=document.createElement('div');
+    block.className='dark-rarity-block';
+    block.id=`dark-block-${rar}`;
+    const itemsHtml=state.darkItems[rar].map((v,i)=>`<div class="dark-item-wrap"><input class="dark-item-input" type="text" value="${esc(v)}" placeholder="アイテム名" oninput="state.darkItems['${rar}'][${i}]=this.value"><button class="dark-item-del" onclick="removeDarkItem('${rar}',${i})">✕</button></div>`).join('');
+    // Fill up to 5 empty slots if fewer items
+    const empties=Math.max(0,5-state.darkItems[rar].length);
+    const emptyHtml=Array.from({length:empties},(_,j)=>`<div class="dark-item-wrap"><input class="dark-item-input" type="text" placeholder="アイテム名" onblur="addDarkItemInline('${rar}',this)" onkeydown="if(event.key==='Enter'){this.blur()}"></div>`).join('');
+    block.innerHTML=`<div class="dark-rarity-head"><span class="dark-rarity-badge" style="background:${DARK_RARITY_COLORS[rar]}">${rar}</span><span class="dark-rate-label">確率</span><input class="dark-rate-input" type="number" id="dark-rate-${rar}" value="${state.darkRates[rar]}" min="0" max="100" step="0.1" oninput="updateDarkRate('${rar}',this.value)"><span class="dark-rate-label">%</span></div><div class="dark-items-grid" id="dark-items-${rar}">${itemsHtml}${emptyHtml}<button class="dark-add-item-btn" onclick="addDarkItem('${rar}')">＋ 追加</button></div>`;
+    wrap.appendChild(block);
+  });
+  updateDarkRateWarn();
+}
+function addDarkItemInline(rar,input){
+  const val=input.value.trim();
+  if(!val)return;
+  state.darkItems[rar].push(val);
+  // UIを再構築してインデックスズレを防ぐ
+  buildDarkSettings();
+}
+function addDarkItem(rar){
+  state.darkItems[rar].push('');
+  buildDarkSettings();
+}
+function removeDarkItem(rar,idx){
+  state.darkItems[rar].splice(idx,1);
+  buildDarkSettings();
+}
+function updateDarkRate(rar,val){
+  state.darkRates[rar]=parseFloat(val)||0;
+  updateDarkRateWarn();
+}
+function updateDarkRateWarn(){
+  const total=DARK_RARITY_ORDER.reduce((s,r)=>s+(parseFloat(document.getElementById('dark-rate-'+r)?.value)||state.darkRates[r]),0);
+  const warn=document.getElementById('dark-rate-warn');
+  if(!warn)return;
+  const diff=Math.abs(total-100);
+  if(diff<0.01){warn.textContent='✅ 合計 100%';warn.style.color='var(--green)';}
+  else{warn.textContent=`⚠️ 合計 ${total.toFixed(1)}%（100%になるように調整してください）`;warn.style.color='var(--red)';}
+}
+function doDarkGacha(n){
+  // sync rates from inputs
+  DARK_RARITY_ORDER.forEach(r=>{
+    const el=document.getElementById('dark-rate-'+r);
+    if(el)state.darkRates[r]=parseFloat(el.value)||0;
+  });
+  // get valid items per rarity
+  const pool={};
+  DARK_RARITY_ORDER.forEach(r=>{
+    pool[r]=state.darkItems[r].filter(v=>v.trim());
+  });
+  // 有効なアイテムが存在するレアリティが1つ以上あるかチェック
+  const totalItems=DARK_RARITY_ORDER.reduce((s,r)=>s+pool[r].length,0);
+  if(totalItems===0){
+    const warn=document.getElementById('dark-rate-warn');
+    if(warn){warn.textContent='⚠️ アイテムを1つ以上設定してからガチャを引いてください';warn.style.color='var(--red)';}
+    return;
+  }
+  // 確率が設定されているが対応アイテムがないレアリティは確率を再分配
+  let totalRate=DARK_RARITY_ORDER.reduce((s,r)=>s+state.darkRates[r],0);
+  // draw
+  const results=[];
+  for(let i=0;i<n;i++){
+    const rand=Math.random()*100;
+    let cum=0,picked=null;
+    for(const r of DARK_RARITY_ORDER){
+      cum+=state.darkRates[r];
+      if(rand<cum){picked=r;break;}
+    }
+    if(!picked)picked='N';
+    // アイテムが空のレアリティが当選した場合、有効アイテムのあるレアリティから再抽選
+    if(!pool[picked]||!pool[picked].length){
+      const validRars=DARK_RARITY_ORDER.filter(r=>pool[r]&&pool[r].length>0);
+      if(validRars.length>0)picked=validRars[Math.floor(Math.random()*validRars.length)];
+    }
+    const items=pool[picked]||[];
+    const item=items.length?items[Math.floor(Math.random()*items.length)]:picked;
+    results.push({rar:picked,item});
+  }
+  // aggregate duplicates
+  const agg={};
+  results.forEach(({rar,item})=>{
+    const key=`${rar}__${item}`;
+    if(!agg[key])agg[key]={rar,item,count:0};
+    agg[key].count++;
+  });
+  const sorted=Object.values(agg).sort((a,b)=>DARK_RARITY_ORDER.indexOf(b.rar)-DARK_RARITY_ORDER.indexOf(a.rar));
+  // display result
+  const resultCard=document.getElementById('dark-result-card');
+  const grid=document.getElementById('dark-result-grid');
+  const summary=document.getElementById('dark-result-summary');
+  resultCard.style.display='block';
+  summary.textContent=`${n}回`;
+  grid.innerHTML='';
+  sorted.forEach(({rar,item,count})=>{
+    const card=document.createElement('div');
+    card.className='dark-result-card';
+    card.style.animation='popIn .3s cubic-bezier(.34,1.56,.64,1)';
+    card.innerHTML=`<span class="dark-result-rarity" style="background:${DARK_RARITY_COLORS[rar]}">${esc(rar)}</span><span class="dark-result-name">${esc(item)}</span>${count>1?`<span class="dark-result-count">×${count}</span>`:''}`;
+    grid.appendChild(card);
+  });
+  // add to history
+  const listenerName=(document.getElementById('dark-listener-name')?.value.trim())||'';
+  const histCard=document.getElementById('dark-history-card');
+  const histList=document.getElementById('dark-history-list');
+  histCard.style.display='block';
+  state.darkHistory.unshift({n,results:sorted,time:new Date().toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'}),name:listenerName});
+  // 現在の結果カードのツイートボタンにindex=0をセット
+  const rBtn=document.getElementById('dark-result-tweet-btn');
+  if(rBtn)rBtn.onclick=()=>tweetDarkResult(0);
+  histList.innerHTML=state.darkHistory.slice(0,10).map((h,idx)=>`<div class="dark-hist-item"><div class="dark-hist-meta"><span>${h.name?esc(h.name)+' · ':''}<span style="font-weight:900;color:var(--text)">${h.n}連</span></span><div style="display:flex;align-items:center;gap:6px"><span>${h.time}</span><button class="dark-tweet-btn" onclick="tweetDarkResult(${idx})">🐦</button></div></div><div class="dark-hist-tags">${h.results.map(r=>`<span class="dark-hist-tag" style="background:${DARK_RARITY_COLORS[r.rar]}">${esc(r.item)}${r.count>1?`×${r.count}`:''}</span>`).join('')}</div></div>`).join('');
+}
+function doDarkGachaCustom(){
+  const n=parseInt(document.getElementById('dark-custom-num').value)||1;
+  doDarkGacha(Math.min(n,5000));
+}
+function clearDarkHistory(){
+  showConfirm('ガチャ履歴をクリアしますか？',()=>{
+    state.darkHistory=[];
+    document.getElementById('dark-history-card').style.display='none';
+    document.getElementById('dark-result-card').style.display='none';
+  });
+}
+function tweetDarkResult(idx){
+  const h=state.darkHistory[idx];
+  if(!h)return;
+  const lines=[];
+  if(h.name)lines.push(h.name);
+  lines.push(`闇ガチャ${h.n}連`);
+  lines.push('');
+  h.results.forEach(r=>{
+    const label=r.rar.toLowerCase();
+    const count=r.count>1?` ×${r.count}`:'';
+    lines.push(`${label} ${r.item}${count}`);
+  });
+  const text=lines.join('\n');
+  const replyUrl=document.getElementById('dark-reply-url')?.value.trim()||'';
+  const match=replyUrl.match(/status\/(\d+)/);
+  const replyId=match?match[1]:'';
+  let url='https://twitter.com/intent/tweet?text='+encodeURIComponent(text);
+  if(replyId)url+='&in_reply_to='+replyId;
+  window.open(url,'_blank');
+}
+
+// ===== DURABILITY =====
+let durIdSeq=0;
+function addDurability(title=''){
+  const id=++durIdSeq;
+  state.durability.push({id,title:title||`耐久${id}`,items:[]});
+  renderDurabilityList();
+}
+function removeDurability(id){
+  showConfirm('この耐久を削除しますか？',()=>{
+    state.durability=state.durability.filter(d=>d.id!==id);
+    renderDurabilityList();
+  });
+}
+let durItemIdSeq=0;
+function addDurItem(durId){
+  const d=state.durability.find(d=>d.id===durId);
+  if(!d)return;
+  const inp=document.getElementById(`dur-add-input-${durId}`);
+  const val=inp?inp.value.trim():'';
+  if(!val)return;
+  d.items.push({id:++durItemIdSeq,label:val,checked:false});
+  inp.value='';
+  renderDurabilityList();
+}
+function addDurItemOnEnter(e,durId){
+  if(e.key==='Enter')addDurItem(durId);
+}
+function toggleDurItem(durId,itemId){
+  const d=state.durability.find(d=>d.id===durId);
+  if(!d)return;
+  const item=d.items.find(i=>i.id===itemId);
+  if(!item)return;
+  item.checked=!item.checked;
+  renderDurabilityList();
+  // 全チェック時に紙吹雪
+  if(d.items.length>0&&d.items.every(i=>i.checked))celebrate();
+}
+function removeDurItem(durId,itemId){
+  const d=state.durability.find(d=>d.id===durId);
+  if(!d)return;
+  d.items=d.items.filter(i=>i.id!==itemId);
+  renderDurabilityList();
+}
+function resetDurability(id){
+  const d=state.durability.find(d=>d.id===id);
+  if(!d)return;
+  showConfirm('この耐久のチェックをリセットしますか？',()=>{
+    d.items.forEach(i=>i.checked=false);
+    renderDurabilityList();
+  });
+}
+function renderDurabilityList(){
+  const wrap=document.getElementById('durability-list');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  state.durability.forEach(d=>{
+    const total=d.items.length;
+    const done=d.items.filter(i=>i.checked).length;
+    const pct=total?done/total*100:0;
+    const card=document.createElement('div');
+    card.className='dur-card';
+    const itemsHtml=d.items.map(item=>`
+      <div class="dur-item${item.checked?' checked':''}" onclick="toggleDurItem(${d.id},${item.id})">
+        <div class="cb">${item.checked?'✓':''}</div>
+        <div class="dur-item-label">${esc(item.label)}</div>
+        <button class="dur-item-del" onclick="(function(e){e.stopPropagation();removeDurItem(${d.id},${item.id})})(event)">✕</button>
+      </div>`).join('');
+    const doneHtml=total>0&&done===total?'<span class="done-badge">🎉 コンプリート！</span>':'';
+    card.innerHTML=`
+      <div class="dur-head">
+        <input class="dur-title-input" type="text" value="${esc(d.title)}" placeholder="耐久名を入力" oninput="state.durability.find(x=>x.id===${d.id}).title=this.value">
+        <button class="dur-reset-btn" onclick="resetDurability(${d.id})">リセット</button>
+        <button class="dur-del-btn" onclick="removeDurability(${d.id})">✕</button>
+      </div>
+      <div class="dur-prog-row">
+        <div class="dur-prog-text${done===total&&total>0?' done':''}"><span>${done}</span> / ${total}</div>
+        ${doneHtml}
+      </div>
+      <div class="prog-bar-wrap"><div class="prog-bar" style="width:${pct}%"></div></div>
+      <div class="dur-items">${itemsHtml}</div>
+      <div class="dur-add-row">
+        <input class="dur-add-input" type="text" id="dur-add-input-${d.id}" placeholder="項目を追加…" onkeydown="addDurItemOnEnter(event,${d.id})">
+        <button class="dur-add-btn" onclick="addDurItem(${d.id})">追加</button>
+      </div>
+    `;
+    wrap.appendChild(card);
+  });
+}
+
+// ===== ROULETTE =====
+const ROULETTE_COLORS=['#4ecde6','#ff6eb4','#a06aff','#3dcc7a','#ff8c42','#ffca3a','#ff5c6a','#5b9fff','#e060c0','#00b894','#fd79a8','#6c5ce7'];
+let rouletteItems=['項目1','項目2','項目3'];
+let rouletteSpinning=false;
+let rouletteAngle=0;
+let rouletteResult='';
+
+function renderRouletteItemInputs(){
+  const wrap=document.getElementById('roulette-items-wrap');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  rouletteItems.forEach((item,i)=>{
+    const row=document.createElement('div');
+    row.className='roulette-item-row';
+    row.innerHTML=`<input class="roulette-item-input" type="text" value="${esc(item)}" placeholder="項目${i+1}" oninput="rouletteItems[${i}]=this.value;drawRouletteWheel()"><button class="roulette-item-del" onclick="removeRouletteItem(${i})">✕</button>`;
+    wrap.appendChild(row);
+  });
+  drawRouletteWheel();
+}
+function addRouletteItem(){
+  rouletteItems.push(`項目${rouletteItems.length+1}`);
+  renderRouletteItemInputs();
+}
+function removeRouletteItem(i){
+  if(rouletteItems.length<=2)return;
+  rouletteItems.splice(i,1);
+  renderRouletteItemInputs();
+}
+function resetRouletteItems(){
+  showConfirm('項目をリセットしますか？',()=>{
+    rouletteItems=['項目1','項目2','項目3'];
+    renderRouletteItemInputs();
+    document.getElementById('roulette-result-card').style.display='none';
+  });
+}
+function drawRouletteWheel(highlightIdx=-1){
+  const canvas=document.getElementById('roulette-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const cx=W/2, cy=H/2, r=W/2-4;
+  const items=rouletteItems.filter(s=>s.trim());
+  if(!items.length)return;
+  const n=items.length;
+  const slice=(2*Math.PI)/n;
+  ctx.clearRect(0,0,W,H);
+  items.forEach((item,i)=>{
+    const start=rouletteAngle+i*slice;
+    const end=start+slice;
+    const col=ROULETTE_COLORS[i%ROULETTE_COLORS.length];
+    // セクター
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,start,end);
+    ctx.closePath();
+    ctx.fillStyle=i===highlightIdx?'#fffde7':col;
+    ctx.fill();
+    ctx.strokeStyle='white';
+    ctx.lineWidth=2;
+    ctx.stroke();
+    // テキスト
+    ctx.save();
+    ctx.translate(cx,cy);
+    ctx.rotate(start+slice/2);
+    ctx.textAlign='right';
+    ctx.fillStyle='white';
+    ctx.font=`bold ${Math.min(14,200/n+4)}px 'M PLUS Rounded 1c',sans-serif`;
+    ctx.shadowColor='rgba(0,0,0,.35)';
+    ctx.shadowBlur=3;
+    const label=item.length>8?item.slice(0,7)+'…':item;
+    ctx.fillText(label,r-10,4);
+    ctx.restore();
+  });
+  // 中心円
+  ctx.beginPath();
+  ctx.arc(cx,cy,18,0,2*Math.PI);
+  ctx.fillStyle='white';
+  ctx.fill();
+  ctx.strokeStyle='rgba(0,0,0,.1)';
+  ctx.lineWidth=2;
+  ctx.stroke();
+}
+function spinRoulette(){
+  if(rouletteSpinning)return;
+  const items=rouletteItems.filter(s=>s.trim());
+  if(items.length<2)return;
+  rouletteSpinning=true;
+  document.getElementById('roulette-spin-btn').disabled=true;
+  document.getElementById('roulette-result-card').style.display='none';
+  const extraSpins=5+Math.floor(Math.random()*5); // 5〜9周
+  const n=items.length;
+  const slice=(2*Math.PI)/n;
+  // 当選インデックスをランダムに決定
+  const winIdx=Math.floor(Math.random()*n);
+  // 矢印は右(canvas 0rad=3時方向)を指す
+  // winIdxセクター中心が0radに来る条件: rouletteAngle + winIdx*slice + slice/2 ≡ 0
+  // → finalAngle = -(winIdx*slice + slice/2)
+  const finalAngle=-(winIdx*slice+slice/2);
+  const startAngle=rouletteAngle%(2*Math.PI);
+  let totalDelta=finalAngle-startAngle+2*Math.PI*extraSpins;
+  if(totalDelta<2*Math.PI)totalDelta+=2*Math.PI; // 最则1周は保証
+  const duration=4000+Math.random()*1000;
+  const startTime=performance.now();
+  function easeOut(t){return 1-Math.pow(1-t,4);}
+  function frame(now){
+    const t=Math.min((now-startTime)/duration,1);
+    rouletteAngle=startAngle+totalDelta*easeOut(t);
+    drawRouletteWheel();
+    if(t<1){requestAnimationFrame(frame);}
+    else{
+      rouletteAngle=rouletteAngle%(2*Math.PI);
+      drawRouletteWheel(winIdx);
+      rouletteResult=items[winIdx];
+      const rc=document.getElementById('roulette-result-card');
+      const rt=document.getElementById('roulette-result-text');
+      rc.style.display='block';
+      rt.textContent=rouletteResult;
+      rouletteSpinning=false;
+      document.getElementById('roulette-spin-btn').disabled=false;
+      celebrate();
+    }
+  }
+  requestAnimationFrame(frame);
+}
+function tweetRouletteResult(){
+  if(!rouletteResult)return;
+  const text=`ルーレット結果：${rouletteResult}`;
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank');
+}
+
+
 buildPresets();
 initTabs();
 buildPref();
@@ -851,6 +1613,9 @@ buildStar();
 buildMBTI();
 rebuildGifts();
 addCounter('入室耐久',100);
+buildDarkSettings();
+renderDurabilityList();
+renderRouletteItemInputs();
 switchTab('pref');
 </script>
 </body>
